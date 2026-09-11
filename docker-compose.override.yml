@@ -1,0 +1,22 @@
+services:
+  backend:
+    build:
+      target: dev
+    volumes:
+      - ./backend/src:/app/src
+      - maven_cache:/root/.m2
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+
+  frontend:
+    build:
+      target: dev
+    volumes:
+      - ./frontend/src:/app/src
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+    ports:
+      - "4200:4200"
+
+volumes:
+  maven_cache:
