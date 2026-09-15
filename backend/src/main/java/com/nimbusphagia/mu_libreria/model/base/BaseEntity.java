@@ -1,6 +1,6 @@
 package com.nimbusphagia.mu_libreria.model.base;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -24,16 +24,19 @@ public abstract class BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @GeneratedValue(strategy = GenerationType.UUID)
-  @Column(unique = true, nullable = false, updatable = false)
+  @Column(name = "public_id", unique = true, nullable = false, updatable = false)
   private UUID publicId;
 
-  @Column(nullable = false, updatable = false)
-  private LocalDateTime createdAt;
+  @Column(name = "created_at", nullable = false, updatable = false)
+  private Instant createdAt;
 
   @PrePersist
   protected void onCreate() {
-    this.createdAt = LocalDateTime.now();
+    if (this.publicId == null) {
+      this.publicId = UUID.randomUUID();
+    }
+    if (this.createdAt == null) {
+      this.createdAt = Instant.now();
+    }
   }
-
 }

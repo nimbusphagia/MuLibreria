@@ -2,23 +2,28 @@ package com.nimbusphagia.mu_libreria.model.entity;
 
 import java.math.BigDecimal;
 
+import org.hibernate.annotations.SQLRestriction;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import com.nimbusphagia.mu_libreria.model.base.BaseEntity;
+import com.nimbusphagia.mu_libreria.model.base.SoftDeletableEntity;
 import com.nimbusphagia.mu_libreria.model.enums.ProductType;
 
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Product extends BaseEntity {
+@SQLRestriction("deleted_at IS NULL")
+@Table(name = "products")
+public class Product extends SoftDeletableEntity {
 
   @Column(nullable = false)
   private String name;

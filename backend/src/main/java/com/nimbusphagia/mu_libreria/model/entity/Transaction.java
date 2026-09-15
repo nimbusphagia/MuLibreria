@@ -14,6 +14,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,10 +24,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(name = "transactions")
 public class Transaction extends BaseEntity {
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "order_id", nullable = false, unique = true)
+  @JoinColumn(name = "order_id", nullable = false)
   private Order order;
 
   @Enumerated(EnumType.STRING)
@@ -40,7 +42,7 @@ public class Transaction extends BaseEntity {
   @Column(nullable = false)
   private PaymentStatus paymentStatus;
 
-  @Column(nullable = false)
+  @Column(nullable = true)
   private LocalDateTime confirmedAt;
 
   @Column(nullable = true)

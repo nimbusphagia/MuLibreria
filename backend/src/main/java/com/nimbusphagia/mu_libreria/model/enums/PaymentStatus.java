@@ -2,9 +2,12 @@ package com.nimbusphagia.mu_libreria.model.enums;
 
 public enum PaymentStatus {
   PENDING,
+  AUTHORIZED,
   COMPLETED,
   FAILED,
-  REFUNDED,
+  EXPIRED,
+  VOIDED,
   PARTIALLY_REFUNDED,
-  CANCELLED
+  REFUNDED,
+  CHARGED_BACK
 }
