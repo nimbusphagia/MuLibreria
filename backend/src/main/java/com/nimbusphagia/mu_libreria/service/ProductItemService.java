@@ -91,4 +91,5 @@ public class ProductItemService {
     Workshop workshop = details.toEntity(product, facilitator);
     return workshopRepository.save(workshop);
   }
+
 }
