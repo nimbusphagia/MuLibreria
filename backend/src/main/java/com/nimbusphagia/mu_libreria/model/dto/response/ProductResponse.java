@@ -1,6 +1,7 @@
 package com.nimbusphagia.mu_libreria.model.dto.response;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.UUID;
 
 import com.nimbusphagia.mu_libreria.model.entity.Book;
@@ -19,7 +20,8 @@ public record ProductResponse(
     Integer availableStock,
     ProductType productType,
     BookResponse book,
-    WorkshopResponse workshop) {
+    WorkshopResponse workshop,
+    Instant createdAt) {
 
   public static ProductResponse fromEntity(Product product, Book book, Workshop workshop) {
     return new ProductResponse(
@@ -33,6 +35,7 @@ public record ProductResponse(
         product.getAvailableStock(),
         product.getType(),
         book != null ? BookResponse.fromEntity(book) : null,
-        workshop != null ? WorkshopResponse.fromEntity(workshop) : null);
+        workshop != null ? WorkshopResponse.fromEntity(workshop) : null,
+        product.getCreatedAt());
   }
 }

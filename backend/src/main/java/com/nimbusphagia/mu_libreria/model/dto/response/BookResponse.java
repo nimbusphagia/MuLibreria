@@ -1,5 +1,6 @@
 package com.nimbusphagia.mu_libreria.model.dto.response;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,7 +14,8 @@ public record BookResponse(
     AuthorResponse author,
     PublisherResponse publisher,
     List<GenreResponse> genres,
-    String isbn) {
+    String isbn,
+    Instant createdAt) {
   public static BookResponse fromEntity(Book book) {
     List<GenreResponse> genreResponses = book.getGenres().stream()
         .map(GenreResponse::fromEntity)
@@ -27,6 +29,7 @@ public record BookResponse(
         AuthorResponse.fromEntity(book.getAuthor()),
         PublisherResponse.fromEntity(book.getPublisher()),
         genreResponses,
-        book.getIsbn());
+        book.getIsbn(),
+        book.getCreatedAt());
   }
 }

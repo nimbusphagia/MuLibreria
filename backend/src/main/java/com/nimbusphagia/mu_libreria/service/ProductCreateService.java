@@ -1,7 +1,7 @@
 package com.nimbusphagia.mu_libreria.service;
 
-import java.util.HashSet;
 import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -68,18 +68,18 @@ public class ProductCreateService {
       throw new IllegalArgumentException("Book details are required for BOOK products.");
     }
 
-    Author author = authorRepository.findById(details.authorId())
+    Author author = authorRepository.findByPublicId(details.authorId())
         .orElseThrow(() -> new ResourceNotFoundException("Author not found."));
-    Publisher publisher = publisherRepository.findById(details.publisherId())
+    Publisher publisher = publisherRepository.findByPublicId(details.publisherId())
         .orElseThrow(() -> new ResourceNotFoundException("Publisher not found."));
 
     Set<Genre> genres = new HashSet<>();
     if (details.genreIds() != null && !details.genreIds().isEmpty()) {
-      List<Genre> found = genreRepository.findAllById(details.genreIds());
-      if (found.size() != details.genreIds().size()) {
+      List<Genre> foundGenres = genreRepository.findAllByPublicIdIn(details.genreIds());
+      if (foundGenres.size() != details.genreIds().size()) {
         throw new ResourceNotFoundException("One or more genres not found.");
       }
-      genres.addAll(found);
+      genres.addAll(foundGenres);
     }
 
     Book book = details.toEntity(product, author, publisher, genres);
@@ -91,7 +91,7 @@ public class ProductCreateService {
       throw new IllegalArgumentException("Workshop details are required for WORKSHOP products.");
     }
 
-    Facilitator facilitator = facilitatorRepository.findById(details.facilitatorId())
+    Facilitator facilitator = facilitatorRepository.findByPublicId(details.facilitatorId())
         .orElseThrow(() -> new ResourceNotFoundException("Facilitator not found."));
 
     Workshop workshop = details.toEntity(product, facilitator);

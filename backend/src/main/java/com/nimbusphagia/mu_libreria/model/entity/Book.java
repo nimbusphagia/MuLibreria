@@ -1,5 +1,6 @@
 package com.nimbusphagia.mu_libreria.model.entity;
 
+import com.nimbusphagia.mu_libreria.model.dto.request.BookDetailsRequest;
 import com.nimbusphagia.mu_libreria.model.entity.base.BaseEntity;
 
 import java.util.HashSet;
@@ -62,4 +63,13 @@ public class Book extends BaseEntity {
   @JoinColumn(name = "product_id", nullable = false, unique = true)
   private Product product;
 
+  public void updateFrom(BookDetailsRequest details, Author author, Publisher publisher, Set<Genre> genres) {
+    this.title = details.title();
+    this.synopsis = details.synopsis();
+    this.images = details.images();
+    this.author = author;
+    this.isbn = details.isbn();
+    this.publisher = publisher;
+    this.genres = genres;
+  }
 }

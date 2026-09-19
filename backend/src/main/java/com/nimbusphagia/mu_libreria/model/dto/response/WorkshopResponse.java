@@ -1,5 +1,6 @@
 package com.nimbusphagia.mu_libreria.model.dto.response;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -17,7 +18,8 @@ public record WorkshopResponse(
     Integer durationMinutes,
     String location,
     Integer capacity,
-    WorkshopStatus status) {
+    WorkshopStatus status,
+    Instant createdAt) {
 
   public static WorkshopResponse fromEntity(Workshop workshop) {
     return new WorkshopResponse(
@@ -30,6 +32,7 @@ public record WorkshopResponse(
         workshop.getDurationMinutes(),
         workshop.getLocation(),
         workshop.getCapacity(),
-        workshop.getStatus());
+        workshop.getStatus(),
+        workshop.getCreatedAt());
   }
 }

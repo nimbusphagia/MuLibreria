@@ -1,5 +1,6 @@
 package com.nimbusphagia.mu_libreria.model.entity;
 
+import com.nimbusphagia.mu_libreria.model.dto.request.PublisherRequest;
 import com.nimbusphagia.mu_libreria.model.entity.base.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -23,4 +24,7 @@ public class Publisher extends BaseEntity {
   @Column(nullable = false)
   private String name;
 
+  public void updateFrom(PublisherRequest request) {
+    this.name = request.name();
+  }
 }

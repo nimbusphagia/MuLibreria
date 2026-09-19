@@ -2,6 +2,7 @@ package com.nimbusphagia.mu_libreria.model.dto.request;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import com.nimbusphagia.mu_libreria.model.entity.Facilitator;
 import com.nimbusphagia.mu_libreria.model.entity.Product;
@@ -16,7 +17,7 @@ public record WorkshopDetailsRequest(
     @NotBlank String title,
     @NotBlank String description,
     @Size(min = 1) List<String> images,
-    @NotNull Long facilitatorId,
+    @NotNull UUID facilitatorId,
     @NotNull(message = "Datetime is required") LocalDateTime datetime,
     @NotNull(message = "Duration is required") Integer durationMinutes,
     @NotBlank(message = "Location is required") String location,

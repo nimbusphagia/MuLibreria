@@ -12,7 +12,7 @@ public record ProductRequest(
     @NotBlank String name,
     String description,
     @NotNull BigDecimal price,
-    @NotBlank String imageUrl,
+    String imageUrl,
     String sku,
     @NotNull ProductType type,
     Integer totalStock,

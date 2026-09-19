@@ -2,6 +2,7 @@ package com.nimbusphagia.mu_libreria.model.dto.request;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import com.nimbusphagia.mu_libreria.model.entity.Author;
 import com.nimbusphagia.mu_libreria.model.entity.Book;
@@ -16,10 +17,10 @@ public record BookDetailsRequest(
     @NotBlank String title,
     String synopsis,
     List<String> images,
-    @NotNull(message = "Author id is required") Long authorId,
+    @NotNull(message = "Author id is required") UUID authorId,
     @NotBlank String isbn,
-    @NotNull(message = "Publisher id is required") Long publisherId,
-    Set<Long> genreIds) {
+    @NotNull(message = "Publisher id is required") UUID publisherId,
+    Set<UUID> genreIds) {
 
   public Book toEntity(Product product, Author author, Publisher publisher, Set<Genre> genres) {
     return Book.builder()
