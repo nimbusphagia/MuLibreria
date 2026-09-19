@@ -3,6 +3,7 @@ package com.nimbusphagia.mu_libreria.service;
 import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -92,4 +93,17 @@ public class ProductItemService {
     return workshopRepository.save(workshop);
   }
 
+  public ProductResponse getProduct(UUID publicId) {
+    Product product = productRepository.findByPublicId(publicId)
+        .orElseThrow(() -> new ResourceNotFoundException("Product not found."));
+    Book book = null;
+    Workshop workshop = null;
+    switch (product.getType()) {
+      case BOOK -> book = bookRepository.findByProduct_PublicId(publicId);
+      case WORKSHOP -> workshop = workshopRepository.findByProduct_PublicId(publicId);
+      case MERCH -> {
+      }
+    }
+    return ProductResponse.fromEntity(product, book, workshop);
+  }
 }

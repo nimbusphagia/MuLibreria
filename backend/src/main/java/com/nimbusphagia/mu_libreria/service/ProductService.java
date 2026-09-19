@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nimbusphagia.mu_libreria.exception.BadRequestException;
 import com.nimbusphagia.mu_libreria.exception.ResourceNotFoundException;
 import com.nimbusphagia.mu_libreria.model.dto.request.ProductRequest;
 import com.nimbusphagia.mu_libreria.model.dto.response.PageResponse;
@@ -52,7 +53,7 @@ public class ProductService {
 
   public PageResponse<ProductSummaryResponse> getProducts(int page, int size, String sortBy, ProductType filter) {
     if (!SORTABLE.contains(sortBy)) {
-      throw new IllegalArgumentException("Invalid sort field: " + sortBy);
+      throw new BadRequestException("Invalid sort field: " + sortBy);
     }
     int safeSize = Math.min(Math.max(size, 1), 50);
     Pageable pageable = PageRequest.of(Math.max(page, 0), safeSize, Sort.by(sortBy));
