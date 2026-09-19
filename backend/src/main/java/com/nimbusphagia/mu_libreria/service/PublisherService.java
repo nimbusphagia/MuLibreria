@@ -12,6 +12,7 @@ import com.nimbusphagia.mu_libreria.model.dto.response.PublisherResponse;
 import com.nimbusphagia.mu_libreria.model.entity.Publisher;
 import com.nimbusphagia.mu_libreria.repository.PublisherRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -19,20 +20,24 @@ import lombok.RequiredArgsConstructor;
 public class PublisherService {
   private final PublisherRepository publisherRepository;
 
-  public PublisherResponse create(PublisherRequest request) {
+  public PublisherResponse createPublisher(PublisherRequest request) {
     Publisher entity = publisherRepository.save(request.toEntity());
     return PublisherResponse.fromEntity(entity);
   }
 
-  public PublisherResponse edit(UUID publicId, PublisherRequest request) {
+  @Transactional
+  public PublisherResponse editPublisher(UUID publicId, PublisherRequest request) {
     Publisher existingPublisher = publisherRepository.findByPublicId(publicId)
         .orElseThrow(() -> new ResourceNotFoundException("Publisher not found."));
     existingPublisher.updateFrom(request);
-    Publisher entity = publisherRepository.save(existingPublisher);
-    return PublisherResponse.fromEntity(entity);
+    publisherRepository.save(existingPublisher);
+    return PublisherResponse.fromEntity(existingPublisher);
   }
 
-  public List<Publisher> getAll() {
-    return publisherRepository.findAll(Sort.by("name"));
+  public List<PublisherResponse> getPublishers() {
+    List<Publisher> entities = publisherRepository.findAll(Sort.by("name"));
+    return entities.stream()
+        .map(PublisherResponse::fromEntity)
+        .toList();
   }
 }

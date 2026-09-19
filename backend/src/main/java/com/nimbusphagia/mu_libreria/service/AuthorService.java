@@ -12,6 +12,7 @@ import com.nimbusphagia.mu_libreria.model.dto.response.AuthorResponse;
 import com.nimbusphagia.mu_libreria.model.entity.Author;
 import com.nimbusphagia.mu_libreria.repository.AuthorRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -19,20 +20,24 @@ import lombok.RequiredArgsConstructor;
 public class AuthorService {
   private final AuthorRepository authorRepository;
 
-  public AuthorResponse create(AuthorRequest request) {
+  public AuthorResponse createAuthor(AuthorRequest request) {
     Author entity = authorRepository.save(request.toEntity());
     return AuthorResponse.fromEntity(entity);
   }
 
-  public AuthorResponse edit(UUID publicId, AuthorRequest request) {
+  @Transactional
+  public AuthorResponse editAuthor(UUID publicId, AuthorRequest request) {
     Author existingAuthor = authorRepository.findByPublicId(publicId)
         .orElseThrow(() -> new ResourceNotFoundException("Author not found."));
     existingAuthor.updateFrom(request);
-    Author entity = authorRepository.save(existingAuthor);
-    return AuthorResponse.fromEntity(entity);
+    authorRepository.save(existingAuthor);
+    return AuthorResponse.fromEntity(existingAuthor);
   }
 
-  public List<Author> getAll() {
-    return authorRepository.findAll(Sort.by("lastName", "name"));
+  public List<AuthorResponse> getAuthors() {
+    List<Author> entities = authorRepository.findAll(Sort.by("lastName", "name"));
+    return entities.stream()
+        .map(AuthorResponse::fromEntity)
+        .toList();
   }
 }

@@ -21,7 +21,8 @@ public record WorkshopDetailsRequest(
     @NotNull(message = "Datetime is required") LocalDateTime datetime,
     @NotNull(message = "Duration is required") Integer durationMinutes,
     @NotBlank(message = "Location is required") String location,
-    @NotNull(message = "Capacity is required") Integer capacity) {
+    @NotNull(message = "Capacity is required") Integer capacity,
+    WorkshopStatus status) {
 
   public Workshop toEntity(Product product, Facilitator facilitator) {
     return Workshop.builder()
@@ -34,7 +35,7 @@ public record WorkshopDetailsRequest(
         .durationMinutes(this.durationMinutes)
         .location(this.location)
         .capacity(this.capacity)
-        .status(WorkshopStatus.REGISTRATION_OPEN)
+        .status(this.status == null ? WorkshopStatus.REGISTRATION_OPEN : this.status)
         .build();
   }
 }

@@ -32,7 +32,6 @@ public class BookService {
 
   @Transactional
   public BookResponse editBook(UUID publicId, BookDetailsRequest details) {
-
     Book existingBook = bookRepository.findByPublicId(publicId)
         .orElseThrow(() -> new ResourceNotFoundException("Book not found."));
 
@@ -54,4 +53,5 @@ public class BookService {
     existingBook.updateFrom(details, author, publisher, genres);
     return BookResponse.fromEntity(bookRepository.save(existingBook));
   }
+
 }

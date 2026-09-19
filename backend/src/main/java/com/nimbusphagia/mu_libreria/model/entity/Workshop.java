@@ -4,6 +4,7 @@ import java.util.List;
 
 import java.time.LocalDateTime;
 
+import com.nimbusphagia.mu_libreria.model.dto.request.WorkshopDetailsRequest;
 import com.nimbusphagia.mu_libreria.model.entity.base.BaseEntity;
 import com.nimbusphagia.mu_libreria.model.enums.WorkshopStatus;
 
@@ -69,4 +70,15 @@ public class Workshop extends BaseEntity {
   @JoinColumn(name = "product_id", nullable = false, unique = true)
   private Product product;
 
+  public void updateFrom(WorkshopDetailsRequest request, Facilitator facilitator) {
+    this.title = request.title();
+    this.description = request.description();
+    this.facilitator = facilitator;
+    this.images = request.images();
+    this.datetime = request.datetime();
+    this.durationMinutes = request.durationMinutes();
+    this.location = request.location();
+    this.capacity = request.capacity();
+    this.status = request.status();
+  }
 }

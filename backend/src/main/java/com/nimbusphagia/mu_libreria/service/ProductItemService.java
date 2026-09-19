@@ -32,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ProductCreateService {
+public class ProductItemService {
 
   private final ProductRepository productRepository;
   private final BookRepository bookRepository;
@@ -49,7 +49,6 @@ public class ProductCreateService {
       throw new IllegalArgumentException("Workshops should not have stock values; use capacity instead.");
     }
     Product savedProduct = productRepository.save(request.toEntity());
-
     Book book = null;
     Workshop workshop = null;
 
@@ -59,7 +58,6 @@ public class ProductCreateService {
       case MERCH -> {
       }
     }
-
     return ProductResponse.fromEntity(savedProduct, book, workshop);
   }
 
@@ -67,13 +65,12 @@ public class ProductCreateService {
     if (details == null) {
       throw new IllegalArgumentException("Book details are required for BOOK products.");
     }
-
     Author author = authorRepository.findByPublicId(details.authorId())
         .orElseThrow(() -> new ResourceNotFoundException("Author not found."));
     Publisher publisher = publisherRepository.findByPublicId(details.publisherId())
         .orElseThrow(() -> new ResourceNotFoundException("Publisher not found."));
-
     Set<Genre> genres = new HashSet<>();
+
     if (details.genreIds() != null && !details.genreIds().isEmpty()) {
       List<Genre> foundGenres = genreRepository.findAllByPublicIdIn(details.genreIds());
       if (foundGenres.size() != details.genreIds().size()) {
@@ -81,7 +78,6 @@ public class ProductCreateService {
       }
       genres.addAll(foundGenres);
     }
-
     Book book = details.toEntity(product, author, publisher, genres);
     return bookRepository.save(book);
   }
@@ -90,10 +86,8 @@ public class ProductCreateService {
     if (details == null) {
       throw new IllegalArgumentException("Workshop details are required for WORKSHOP products.");
     }
-
     Facilitator facilitator = facilitatorRepository.findByPublicId(details.facilitatorId())
         .orElseThrow(() -> new ResourceNotFoundException("Facilitator not found."));
-
     Workshop workshop = details.toEntity(product, facilitator);
     return workshopRepository.save(workshop);
   }
