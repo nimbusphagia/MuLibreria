@@ -2,11 +2,9 @@ package com.nimbusphagia.mu_libreria.model.entity;
 
 import java.util.List;
 
-import org.hibernate.annotations.SQLRestriction;
-
 import java.time.LocalDateTime;
 
-import com.nimbusphagia.mu_libreria.model.base.SoftDeletableEntity;
+import com.nimbusphagia.mu_libreria.model.entity.base.BaseEntity;
 import com.nimbusphagia.mu_libreria.model.enums.WorkshopStatus;
 
 import jakarta.persistence.CollectionTable;
@@ -21,17 +19,20 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@SQLRestriction("deleted_at IS NULL")
 @Table(name = "workshops")
-public class Workshop extends SoftDeletableEntity {
+public class Workshop extends BaseEntity {
 
   @Column(nullable = false)
   private String title;
@@ -40,7 +41,7 @@ public class Workshop extends SoftDeletableEntity {
   private String description;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "facilitator_id")
+  @JoinColumn(name = "facilitator_id", nullable = false)
   private Facilitator facilitator;
 
   @ElementCollection

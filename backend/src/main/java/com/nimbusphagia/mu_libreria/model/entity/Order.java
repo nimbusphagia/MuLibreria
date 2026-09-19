@@ -2,7 +2,7 @@ package com.nimbusphagia.mu_libreria.model.entity;
 
 import java.math.BigDecimal;
 
-import com.nimbusphagia.mu_libreria.model.base.BaseEntity;
+import com.nimbusphagia.mu_libreria.model.entity.base.BaseEntity;
 import com.nimbusphagia.mu_libreria.model.enums.OrderStatus;
 
 import jakarta.persistence.Column;

@@ -1,11 +1,8 @@
 package com.nimbusphagia.mu_libreria.model.enums;
 
 public enum OrderStatus {
-  PENDING_PAYMENT,
-  PROCESSING,
-  SHIPPED,
-  DELIVERED,
-  CANCELLED,
-  PARTIALLY_REFUNDED,
-  REFUNDED
+  PENDING,
+  CONFIRMED,
+  FULFILLED,
+  CANCELLED
 }

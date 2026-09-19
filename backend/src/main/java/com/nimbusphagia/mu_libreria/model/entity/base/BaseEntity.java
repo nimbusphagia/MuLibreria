@@ -1,4 +1,4 @@
-package com.nimbusphagia.mu_libreria.model.base;
+package com.nimbusphagia.mu_libreria.model.entity.base;
 
 import java.time.Instant;
 import java.util.UUID;

@@ -3,7 +3,7 @@ package com.nimbusphagia.mu_libreria.model.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import com.nimbusphagia.mu_libreria.model.base.BaseEntity;
+import com.nimbusphagia.mu_libreria.model.entity.base.BaseEntity;
 import com.nimbusphagia.mu_libreria.model.enums.PaymentMethod;
 import com.nimbusphagia.mu_libreria.model.enums.PaymentStatus;
 

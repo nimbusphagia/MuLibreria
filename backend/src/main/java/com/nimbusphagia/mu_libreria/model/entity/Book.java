@@ -1,11 +1,10 @@
 package com.nimbusphagia.mu_libreria.model.entity;
 
-import com.nimbusphagia.mu_libreria.model.base.SoftDeletableEntity;
+import com.nimbusphagia.mu_libreria.model.entity.base.BaseEntity;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.hibernate.annotations.SQLRestriction;
 
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -19,6 +18,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,10 +27,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Entity
-@SQLRestriction("deleted_at IS NULL")
 @Table(name = "books")
-public class Book extends SoftDeletableEntity {
+public class Book extends BaseEntity {
   @Column(nullable = false)
   private String title;
 
@@ -41,21 +43,23 @@ public class Book extends SoftDeletableEntity {
   private List<String> images;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "author_id")
+  @JoinColumn(name = "author_id", nullable = false)
   private Author author;
 
   @Column(unique = true, nullable = false)
   private String isbn;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "publisher_id")
+  @JoinColumn(name = "publisher_id", nullable = false)
   private Publisher publisher;
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "books_genres", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
-  private Set<Genre> genres;
+  @Builder.Default
+  private Set<Genre> genres = new HashSet<>();
 
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "product_id", nullable = false, unique = true)
   private Product product;
+
 }

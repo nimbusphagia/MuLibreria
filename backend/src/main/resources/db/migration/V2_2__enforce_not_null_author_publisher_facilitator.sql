@@ -1,0 +1,6 @@
+ALTER TABLE books ALTER COLUMN author_id
+SET NOT NULL;
+ALTER TABLE books ALTER COLUMN publisher_id
+SET NOT NULL;
+ALTER TABLE workshops ALTER COLUMN facilitator_id
+SET NOT NULL;
