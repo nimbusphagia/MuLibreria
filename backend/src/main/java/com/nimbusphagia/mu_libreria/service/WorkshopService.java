@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nimbusphagia.mu_libreria.exception.ResourceNotFoundException;
@@ -15,10 +16,9 @@ import com.nimbusphagia.mu_libreria.model.enums.WorkshopStatus;
 import com.nimbusphagia.mu_libreria.repository.FacilitatorRepository;
 import com.nimbusphagia.mu_libreria.repository.WorkshopRepository;
 
-import jakarta.persistence.Entity;
 import lombok.RequiredArgsConstructor;
 
-@Entity
+@Service
 @RequiredArgsConstructor
 public class WorkshopService {
   private final WorkshopRepository workshopRepository;

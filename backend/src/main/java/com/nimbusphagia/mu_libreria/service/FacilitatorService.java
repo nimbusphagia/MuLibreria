@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.nimbusphagia.mu_libreria.exception.ResourceNotFoundException;
 import com.nimbusphagia.mu_libreria.model.dto.request.FacilitatorRequest;
@@ -12,7 +13,6 @@ import com.nimbusphagia.mu_libreria.model.dto.response.FacilitatorResponse;
 import com.nimbusphagia.mu_libreria.model.entity.Facilitator;
 import com.nimbusphagia.mu_libreria.repository.FacilitatorRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service

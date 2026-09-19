@@ -14,7 +14,6 @@ import com.nimbusphagia.mu_libreria.exception.BadRequestException;
 import com.nimbusphagia.mu_libreria.exception.ResourceNotFoundException;
 import com.nimbusphagia.mu_libreria.model.dto.request.ProductRequest;
 import com.nimbusphagia.mu_libreria.model.dto.response.PageResponse;
-import com.nimbusphagia.mu_libreria.model.dto.response.ProductResponse;
 import com.nimbusphagia.mu_libreria.model.dto.response.ProductSummaryResponse;
 import com.nimbusphagia.mu_libreria.model.entity.Product;
 import com.nimbusphagia.mu_libreria.model.enums.ProductType;
@@ -26,13 +25,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductService {
 
-  private final ProductItemService productItemService;
   private final ProductRepository productRepository;
   private static final Set<String> SORTABLE = Set.of("name", "price", "createdAt");
-
-  public ProductResponse createProduct(ProductRequest productRequest) {
-    return productItemService.createProduct(productRequest);
-  }
 
   @Transactional
   public ProductSummaryResponse editProduct(UUID publicId, ProductRequest productRequest) {
