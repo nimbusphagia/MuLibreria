@@ -42,11 +42,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       String publicId = jwtService.extractPublicId(token);
       String role = jwtService.extractRole(token);
 
-      userRepository.findByPublicId(UUID.fromString(publicId)).ifPresent(user -> {
-        var authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
-        var authToken = new UsernamePasswordAuthenticationToken(user, null, authorities);
-        SecurityContextHolder.getContext().setAuthentication(authToken);
-      });
+      userRepository.findByPublicId(UUID.fromString(publicId))
+          .ifPresentOrElse(
+              user -> {
+                var authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
+                System.out.println("Setting auth for " + user.getEmail() + " with authorities: " + authorities);
+                var authToken = new UsernamePasswordAuthenticationToken(user, null, authorities);
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+                System.out.println(
+                    "SecurityContext authentication set: " + SecurityContextHolder.getContext().getAuthentication());
+              },
+              () -> System.out.println("No user found for publicId: " + publicId));
     }
 
     filterChain.doFilter(request, response);
