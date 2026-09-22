@@ -43,6 +43,7 @@ public class ProductItemService {
   private final GenreRepository genreRepository;
   private final FacilitatorRepository facilitatorRepository;
 
+  // CREATE
   @Transactional
   public ProductResponse createProduct(ProductRequest request) {
     if (request.type() == ProductType.WORKSHOP &&
@@ -93,6 +94,7 @@ public class ProductItemService {
     return workshopRepository.save(workshop);
   }
 
+  // GET
   public ProductResponse getProduct(UUID publicId) {
     Product product = productRepository.findByPublicId(publicId)
         .orElseThrow(() -> new ResourceNotFoundException("Product not found."));
