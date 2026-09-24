@@ -4,12 +4,9 @@ import com.nimbusphagia.mu_libreria.model.dto.request.BookDetailsRequest;
 import com.nimbusphagia.mu_libreria.model.entity.base.BaseEntity;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -39,10 +36,6 @@ public class Book extends BaseEntity {
   @Column(nullable = true)
   private String synopsis;
 
-  @ElementCollection
-  @CollectionTable(name = "book_images", joinColumns = @JoinColumn(name = "book_id"))
-  private List<String> images;
-
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "author_id", nullable = false)
   private Author author;
@@ -66,7 +59,6 @@ public class Book extends BaseEntity {
   public void updateFrom(BookDetailsRequest details, Author author, Publisher publisher, Set<Genre> genres) {
     this.title = details.title();
     this.synopsis = details.synopsis();
-    this.images = details.images();
     this.author = author;
     this.isbn = details.isbn();
     this.publisher = publisher;

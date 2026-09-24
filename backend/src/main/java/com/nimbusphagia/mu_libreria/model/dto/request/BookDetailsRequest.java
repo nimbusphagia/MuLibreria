@@ -1,6 +1,5 @@
 package com.nimbusphagia.mu_libreria.model.dto.request;
 
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -16,7 +15,6 @@ import jakarta.validation.constraints.NotNull;
 public record BookDetailsRequest(
     @NotBlank String title,
     String synopsis,
-    List<String> images,
     @NotNull(message = "Author id is required") UUID authorId,
     @NotBlank String isbn,
     @NotNull(message = "Publisher id is required") UUID publisherId,
@@ -27,7 +25,6 @@ public record BookDetailsRequest(
         .product(product)
         .title(this.title)
         .synopsis(this.synopsis)
-        .images(this.images)
         .author(author)
         .isbn(this.isbn)
         .publisher(publisher)

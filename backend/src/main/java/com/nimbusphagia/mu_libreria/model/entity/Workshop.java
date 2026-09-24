@@ -1,16 +1,12 @@
 package com.nimbusphagia.mu_libreria.model.entity;
 
-import java.util.List;
-
 import java.time.LocalDateTime;
 
 import com.nimbusphagia.mu_libreria.model.dto.request.WorkshopDetailsRequest;
 import com.nimbusphagia.mu_libreria.model.entity.base.BaseEntity;
 import com.nimbusphagia.mu_libreria.model.enums.WorkshopStatus;
 
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -45,11 +41,6 @@ public class Workshop extends BaseEntity {
   @JoinColumn(name = "facilitator_id", nullable = false)
   private Facilitator facilitator;
 
-  @ElementCollection
-  @CollectionTable(name = "workshop_images", joinColumns = @JoinColumn(name = "workshop_id"))
-  @Column(name = "image_url")
-  private List<String> images;
-
   @Column(nullable = false)
   private LocalDateTime datetime;
 
@@ -74,7 +65,6 @@ public class Workshop extends BaseEntity {
     this.title = request.title();
     this.description = request.description();
     this.facilitator = facilitator;
-    this.images = request.images();
     this.datetime = request.datetime();
     this.durationMinutes = request.durationMinutes();
     this.location = request.location();

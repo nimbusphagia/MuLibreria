@@ -2,6 +2,7 @@ package com.nimbusphagia.mu_libreria.model.dto.response;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 import com.nimbusphagia.mu_libreria.model.entity.Book;
@@ -14,7 +15,7 @@ public record ProductResponse(
     String name,
     String description,
     BigDecimal price,
-    String imageUrl,
+    List<MediaResponse> media,
     String sku,
     Integer totalStock,
     Integer availableStock,
@@ -23,13 +24,13 @@ public record ProductResponse(
     WorkshopResponse workshop,
     Instant createdAt) {
 
-  public static ProductResponse fromEntity(Product product, Book book, Workshop workshop) {
+  public static ProductResponse fromEntity(Product product, Book book, Workshop workshop, List<MediaResponse> media) {
     return new ProductResponse(
         product.getPublicId(),
         product.getName(),
         product.getDescription(),
         product.getPrice(),
-        product.getImageUrl(),
+        media,
         product.getSku(),
         product.getTotalStock(),
         product.getAvailableStock(),

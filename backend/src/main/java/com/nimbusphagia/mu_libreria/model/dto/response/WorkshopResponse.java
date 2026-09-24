@@ -2,7 +2,6 @@ package com.nimbusphagia.mu_libreria.model.dto.response;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 import com.nimbusphagia.mu_libreria.model.entity.Workshop;
@@ -12,7 +11,6 @@ public record WorkshopResponse(
     UUID publicId,
     String title,
     String description,
-    List<String> images,
     FacilitatorResponse facilitator,
     LocalDateTime datetime,
     Integer durationMinutes,
@@ -26,7 +24,6 @@ public record WorkshopResponse(
         workshop.getPublicId(),
         workshop.getTitle(),
         workshop.getDescription(),
-        workshop.getImages(),
         workshop.getFacilitator() != null ? FacilitatorResponse.fromEntity(workshop.getFacilitator()) : null,
         workshop.getDatetime(),
         workshop.getDurationMinutes(),

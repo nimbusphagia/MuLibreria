@@ -1,6 +1,7 @@
 package com.nimbusphagia.mu_libreria.service;
 
 import java.util.UUID;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nimbusphagia.mu_libreria.exception.BadRequestException;
 import com.nimbusphagia.mu_libreria.exception.ResourceNotFoundException;
 import com.nimbusphagia.mu_libreria.model.dto.request.ProductRequest;
+import com.nimbusphagia.mu_libreria.model.dto.response.MediaResponse;
 import com.nimbusphagia.mu_libreria.model.dto.response.PageResponse;
 import com.nimbusphagia.mu_libreria.model.dto.response.ProductSummaryResponse;
 import com.nimbusphagia.mu_libreria.model.entity.Product;
@@ -34,13 +36,19 @@ public class ProductService {
         .orElseThrow(() -> new ResourceNotFoundException("Product not found."));
     existingProduct.updateFrom(productRequest);
     productRepository.save(existingProduct);
-    return ProductSummaryResponse.fromEntity(existingProduct);
+    List<MediaResponse> productMedia = null;
+    return ProductSummaryResponse.fromEntity(existingProduct, productMedia);
   }
 
   @Transactional
   public void softDelete(UUID publicId) {
     Product existingProduct = productRepository.findByPublicId(publicId)
         .orElseThrow(() -> new ResourceNotFoundException("Product not found."));
+    if (existingProduct.getType() == ProductType.WORKSHOP) {
+      // If workshop has any orders(registrations) it isn't allowed,
+      // instead it should be CANCELLED
+      throw new BadRequestException("Workshop has people registered, it should be CANCELLED.");
+    }
     existingProduct.softDelete();
     productRepository.save(existingProduct);
   }
@@ -55,6 +63,9 @@ public class ProductService {
         ? productRepository.findAll(pageable)
         : productRepository.findAllByType(filter, pageable);
 
-    return PageResponse.from(products.map(ProductSummaryResponse::fromEntity));
+    return PageResponse.from(products.map((product) -> {
+      List<MediaResponse> media = null;
+      return ProductSummaryResponse.fromEntity(product, media);
+    }));
   }
 }

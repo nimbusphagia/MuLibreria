@@ -39,9 +39,6 @@ public class Product extends SoftDeletableEntity {
   @Column(nullable = false)
   private BigDecimal price;
 
-  @Column(nullable = false)
-  private String imageUrl;
-
   @Column(unique = true)
   private String sku;
 
@@ -60,7 +57,6 @@ public class Product extends SoftDeletableEntity {
     this.name = request.name();
     this.description = request.description();
     this.price = request.price();
-    this.imageUrl = request.imageUrl();
     this.sku = request.sku();
     this.totalStock = request.totalStock();
     this.availableStock = request.availableStock();

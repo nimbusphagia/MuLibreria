@@ -12,7 +12,6 @@ public record ProductRequest(
     @NotBlank String name,
     String description,
     @NotNull BigDecimal price,
-    String imageUrl,
     String sku,
     @NotNull ProductType type,
     Integer totalStock,
@@ -24,7 +23,6 @@ public record ProductRequest(
         .name(this.name)
         .description(this.description)
         .price(this.price)
-        .imageUrl(this.imageUrl)
         .sku(this.sku)
         .totalStock(this.totalStock)
         .availableStock(this.availableStock)

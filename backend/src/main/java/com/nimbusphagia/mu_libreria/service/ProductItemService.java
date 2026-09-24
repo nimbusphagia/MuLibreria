@@ -12,6 +12,7 @@ import com.nimbusphagia.mu_libreria.exception.ResourceNotFoundException;
 import com.nimbusphagia.mu_libreria.model.dto.request.BookDetailsRequest;
 import com.nimbusphagia.mu_libreria.model.dto.request.ProductRequest;
 import com.nimbusphagia.mu_libreria.model.dto.request.WorkshopDetailsRequest;
+import com.nimbusphagia.mu_libreria.model.dto.response.MediaResponse;
 import com.nimbusphagia.mu_libreria.model.dto.response.ProductResponse;
 import com.nimbusphagia.mu_libreria.model.entity.Author;
 import com.nimbusphagia.mu_libreria.model.entity.Book;
@@ -60,7 +61,8 @@ public class ProductItemService {
       case MERCH -> {
       }
     }
-    return ProductResponse.fromEntity(savedProduct, book, workshop);
+    List<MediaResponse> productMedia = null;
+    return ProductResponse.fromEntity(savedProduct, book, workshop, productMedia);
   }
 
   private Book createBookDetails(Product product, BookDetailsRequest details) {
@@ -106,7 +108,8 @@ public class ProductItemService {
       case MERCH -> {
       }
     }
-    return ProductResponse.fromEntity(product, book, workshop);
+    List<MediaResponse> productMedia = null;
+    return ProductResponse.fromEntity(product, book, workshop, productMedia);
   }
 
 }
