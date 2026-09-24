@@ -56,11 +56,19 @@ public class Book extends BaseEntity {
   @JoinColumn(name = "product_id", nullable = false, unique = true)
   private Product product;
 
+  public static Book from(BookDetailsRequest details, Author author, Publisher publisher,
+      Set<Genre> genres, Product product) {
+    Book book = new Book();
+    book.updateFrom(details, author, publisher, genres);
+    book.product = product;
+    return book;
+  }
+
   public void updateFrom(BookDetailsRequest details, Author author, Publisher publisher, Set<Genre> genres) {
     this.title = details.title();
     this.synopsis = details.synopsis();
-    this.author = author;
     this.isbn = details.isbn();
+    this.author = author;
     this.publisher = publisher;
     this.genres = genres;
   }

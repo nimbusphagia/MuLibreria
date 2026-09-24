@@ -11,13 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nimbusphagia.mu_libreria.exception.BadRequestException;
-import com.nimbusphagia.mu_libreria.model.dto.request.ProductRequest;
 import com.nimbusphagia.mu_libreria.model.dto.request.WorkshopDetailsRequest;
+import com.nimbusphagia.mu_libreria.model.dto.request.WorkshopRequest;
 import com.nimbusphagia.mu_libreria.model.dto.response.ProductResponse;
 import com.nimbusphagia.mu_libreria.model.dto.response.WorkshopResponse;
-import com.nimbusphagia.mu_libreria.model.enums.ProductType;
-import com.nimbusphagia.mu_libreria.service.ProductItemService;
+import com.nimbusphagia.mu_libreria.service.ProductService;
 import com.nimbusphagia.mu_libreria.service.WorkshopService;
 
 import jakarta.validation.Valid;
@@ -28,15 +26,12 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin/workshops")
 public class AdminWorkshopController {
   private final WorkshopService workshopService;
-  private final ProductItemService productItemService;
+  private final ProductService productService;
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public ProductResponse create(@RequestBody @Valid ProductRequest request) {
-    if (request.type() != ProductType.WORKSHOP) {
-      throw new BadRequestException("This endpoint only accepts WORKSHOP products.");
-    }
-    return productItemService.createProduct(request);
+  public ProductResponse create(@RequestBody @Valid WorkshopRequest request) {
+    return productService.createWorkshop(request);
   }
 
   @PutMapping("/{publicId}")

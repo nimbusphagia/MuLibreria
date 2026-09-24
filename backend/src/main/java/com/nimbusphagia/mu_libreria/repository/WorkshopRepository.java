@@ -11,4 +11,6 @@ public interface WorkshopRepository extends BaseRepository<Workshop, Long> {
   Workshop findByProduct_PublicId(UUID publicId);
 
   List<Workshop> findByStatus(WorkshopStatus status);
+
+  Boolean existsByPublicIdAndStatus(UUID publicId, WorkshopStatus status);
 }

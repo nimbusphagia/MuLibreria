@@ -5,8 +5,6 @@ services:
     volumes:
       - ./backend/src:/app/src
       - maven_cache:/root/.m2
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
 
   frontend:
     build:

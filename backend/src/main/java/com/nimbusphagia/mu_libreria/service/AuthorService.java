@@ -34,6 +34,11 @@ public class AuthorService {
     return AuthorResponse.fromEntity(existingAuthor);
   }
 
+  public Author getByPublicId(UUID publicId) {
+    return authorRepository.findByPublicId(publicId)
+        .orElseThrow(() -> new ResourceNotFoundException("Invalid author"));
+  }
+
   public List<AuthorResponse> getAuthors() {
     List<Author> entities = authorRepository.findAll(Sort.by("lastName", "name"));
     return entities.stream()

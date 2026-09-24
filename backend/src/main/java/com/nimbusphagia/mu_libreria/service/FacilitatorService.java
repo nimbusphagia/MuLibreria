@@ -40,4 +40,10 @@ public class FacilitatorService {
         .map(FacilitatorResponse::fromEntity)
         .toList();
   }
+
+  public Facilitator getFacilitator(UUID facilitatorId) {
+    return facilitatorRepository.findByPublicId(facilitatorId)
+        .orElseThrow(() -> new ResourceNotFoundException("Invalid facilitator."));
+
+  }
 }

@@ -3,13 +3,11 @@ package com.nimbusphagia.mu_libreria.model.dto.request;
 import java.math.BigDecimal;
 
 import com.nimbusphagia.mu_libreria.model.entity.Product;
-import com.nimbusphagia.mu_libreria.model.enums.ProductType;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record ProductRequest(
-    @NotNull ProductType type,
+public record BookRequest(
     @NotBlank String name,
     String description,
     @NotNull BigDecimal price,
@@ -19,7 +17,6 @@ public record ProductRequest(
     BookDetailsRequest details) {
   public Product toEntity() {
     return Product.builder()
-        .type(type)
         .name(this.name)
         .description(this.description)
         .price(this.price)
@@ -28,5 +25,4 @@ public record ProductRequest(
         .availableStock(this.availableStock)
         .build();
   }
-
 }

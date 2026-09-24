@@ -34,6 +34,11 @@ public class PublisherService {
     return PublisherResponse.fromEntity(existingPublisher);
   }
 
+  public Publisher getByPublicId(UUID publicId) {
+    return publisherRepository.findByPublicId(publicId)
+        .orElseThrow(() -> new ResourceNotFoundException("Invalid publisher"));
+  }
+
   public List<PublisherResponse> getPublishers() {
     List<Publisher> entities = publisherRepository.findAll(Sort.by("name"));
     return entities.stream()

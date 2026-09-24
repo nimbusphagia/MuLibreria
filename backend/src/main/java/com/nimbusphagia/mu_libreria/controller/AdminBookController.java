@@ -11,14 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nimbusphagia.mu_libreria.exception.BadRequestException;
 import com.nimbusphagia.mu_libreria.model.dto.request.BookDetailsRequest;
-import com.nimbusphagia.mu_libreria.model.dto.request.ProductRequest;
+import com.nimbusphagia.mu_libreria.model.dto.request.BookRequest;
 import com.nimbusphagia.mu_libreria.model.dto.response.BookResponse;
 import com.nimbusphagia.mu_libreria.model.dto.response.ProductResponse;
-import com.nimbusphagia.mu_libreria.model.enums.ProductType;
 import com.nimbusphagia.mu_libreria.service.BookService;
-import com.nimbusphagia.mu_libreria.service.ProductItemService;
+import com.nimbusphagia.mu_libreria.service.ProductService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,16 +25,13 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/admin/books")
 public class AdminBookController {
-  private final ProductItemService productItemService;
+  private final ProductService productService;
   private final BookService bookService;
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public ProductResponse createBook(@RequestBody @Valid ProductRequest request) {
-    if (request.type() != ProductType.BOOK) {
-      throw new BadRequestException("This endpoint only accepts BOOK products.");
-    }
-    return productItemService.createProduct(request);
+  public ProductResponse createBook(@RequestBody @Valid BookRequest request) {
+    return productService.createBook(request);
   }
 
   @PutMapping("/{publicId}")

@@ -7,13 +7,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nimbusphagia.mu_libreria.exception.BadRequestException;
 import com.nimbusphagia.mu_libreria.exception.ResourceNotFoundException;
 import com.nimbusphagia.mu_libreria.model.dto.request.WorkshopDetailsRequest;
 import com.nimbusphagia.mu_libreria.model.dto.response.WorkshopResponse;
 import com.nimbusphagia.mu_libreria.model.entity.Facilitator;
+import com.nimbusphagia.mu_libreria.model.entity.Product;
 import com.nimbusphagia.mu_libreria.model.entity.Workshop;
 import com.nimbusphagia.mu_libreria.model.enums.WorkshopStatus;
-import com.nimbusphagia.mu_libreria.repository.FacilitatorRepository;
 import com.nimbusphagia.mu_libreria.repository.WorkshopRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -22,19 +23,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WorkshopService {
   private final WorkshopRepository workshopRepository;
-  private final FacilitatorRepository facilitatorRepository;
+  private final FacilitatorService facilitatorService;
 
-  @Transactional
-  public WorkshopResponse editWorkshop(UUID publicId, WorkshopDetailsRequest details) {
-
-    Workshop existingWorkshop = workshopRepository.findByPublicId(publicId)
-        .orElseThrow(() -> new ResourceNotFoundException("Workshop not found."));
-
-    Facilitator facilitator = facilitatorRepository.findByPublicId(details.facilitatorId())
-        .orElseThrow(() -> new ResourceNotFoundException("Invalid facilitator."));
-
-    existingWorkshop.updateFrom(details, facilitator);
-    return WorkshopResponse.fromEntity(workshopRepository.save(existingWorkshop));
+  // GET
+  public Workshop getByProduct(UUID productId) {
+    return workshopRepository.findByProduct_PublicId(productId);
   }
 
   public List<WorkshopResponse> getWorkshops(WorkshopStatus status) {
@@ -47,4 +40,23 @@ public class WorkshopService {
         .toList();
   }
 
+  // EDIT
+  @Transactional
+  public WorkshopResponse editWorkshop(UUID publicId, WorkshopDetailsRequest details) {
+    Workshop existingWorkshop = workshopRepository.findByPublicId(publicId)
+        .orElseThrow(() -> new ResourceNotFoundException("Workshop not found."));
+    Facilitator facilitator = facilitatorService.getFacilitator(details.facilitatorId());
+    existingWorkshop.updateFrom(details, facilitator);
+    return WorkshopResponse.fromEntity(workshopRepository.save(existingWorkshop));
+  }
+
+  // For product creation
+  public Workshop createAndAttach(Product product, WorkshopDetailsRequest details) {
+    if (details == null) {
+      throw new BadRequestException("Workshop details are required.");
+    }
+    Facilitator facilitator = facilitatorService.getFacilitator(details.facilitatorId());
+    Workshop workshop = details.toEntity(product, facilitator);
+    return workshopRepository.save(workshop);
+  }
 }
