@@ -38,7 +38,39 @@ public class ProductService {
   private final ProductMediaService mediaService;
   private static final Set<String> SORTABLE = Set.of("name", "price", "createdAt");
 
-  // Product Details
+  // GET
+  public ProductResponse getProduct(UUID publicId) {
+    Product product = productRepository.findByPublicId(publicId)
+        .orElseThrow(() -> new ResourceNotFoundException("Product not found."));
+    Book book = null;
+    Workshop workshop = null;
+    switch (product.getType()) {
+      case BOOK -> book = bookService.getByProduct(product.getPublicId());
+      case WORKSHOP -> workshop = workshopService.getByProduct(product.getPublicId());
+      case MERCH -> {
+      }
+    }
+    List<MediaResponse> media = mediaService.getByProduct(publicId);
+    return ProductResponse.fromEntity(product, book, workshop, media);
+  }
+
+  public PageResponse<ProductSummaryResponse> getProducts(int page, int size, String sortBy, ProductType filter) {
+    if (!SORTABLE.contains(sortBy)) {
+      throw new BadRequestException("Invalid sort field: " + sortBy);
+    }
+    int safeSize = Math.min(Math.max(size, 1), 50);
+    Pageable pageable = PageRequest.of(Math.max(page, 0), safeSize, Sort.by(sortBy));
+    Page<Product> products = (filter == null)
+        ? productRepository.findAll(pageable)
+        : productRepository.findAllByType(filter, pageable);
+
+    return PageResponse.from(products.map((product) -> {
+      List<MediaResponse> media = mediaService.getByProduct(product.getPublicId());
+      return ProductSummaryResponse.fromEntity(product, media);
+    }));
+  }
+
+  // Details
   @Transactional
   public ProductSummaryResponse editProductDetails(UUID publicId, BookRequest bookRequest,
       WorkshopRequest workshopRequest) {
@@ -92,36 +124,10 @@ public class ProductService {
     product.softDelete();
   }
 
-  // GET
-  public ProductResponse getProduct(UUID publicId) {
-    Product product = productRepository.findByPublicId(publicId)
-        .orElseThrow(() -> new ResourceNotFoundException("Product not found."));
-    Book book = null;
-    Workshop workshop = null;
-    switch (product.getType()) {
-      case BOOK -> book = bookService.getByProduct(product.getPublicId());
-      case WORKSHOP -> workshop = workshopService.getByProduct(product.getPublicId());
-      case MERCH -> {
-      }
-    }
-    List<MediaResponse> media = mediaService.getByProduct(publicId);
-    return ProductResponse.fromEntity(product, book, workshop, media);
+  // Media
+
+  // Utilities
+  public Boolean exists(UUID productId) {
+    return productRepository.existsByPublicId(productId);
   }
-
-  public PageResponse<ProductSummaryResponse> getProducts(int page, int size, String sortBy, ProductType filter) {
-    if (!SORTABLE.contains(sortBy)) {
-      throw new BadRequestException("Invalid sort field: " + sortBy);
-    }
-    int safeSize = Math.min(Math.max(size, 1), 50);
-    Pageable pageable = PageRequest.of(Math.max(page, 0), safeSize, Sort.by(sortBy));
-    Page<Product> products = (filter == null)
-        ? productRepository.findAll(pageable)
-        : productRepository.findAllByType(filter, pageable);
-
-    return PageResponse.from(products.map((product) -> {
-      List<MediaResponse> media = mediaService.getByProduct(product.getPublicId());
-      return ProductSummaryResponse.fromEntity(product, media);
-    }));
-  }
-
 }

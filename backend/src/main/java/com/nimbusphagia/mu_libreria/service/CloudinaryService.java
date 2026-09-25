@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.nimbusphagia.mu_libreria.exception.BadRequestException;
+import com.nimbusphagia.mu_libreria.model.dto.response.CloudinaryResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,15 +19,25 @@ public class CloudinaryService {
 
   private final Cloudinary cloudinary;
 
-  public String upload(MultipartFile file) {
+  public CloudinaryResponse upload(MultipartFile file) {
+    Map<?, ?> result;
     try {
-      Map<?, ?> result = cloudinary.uploader().upload(
+      result = cloudinary.uploader().upload(
           file.getBytes(),
           ObjectUtils.asMap("folder", "mu_products"));
-      return (String) result.get("secure_url");
     } catch (IOException e) {
       throw new BadRequestException("Failed to upload to cloudinary: " + e.getMessage());
     }
+
+    String publicId = (String) result.get("public_id");
+    String url = (String) result.get("secure_url");
+
+    if (publicId == null || publicId.isBlank() || url == null || url.isBlank()) {
+      throw new IllegalStateException(
+          "Cloudinary upload response missing public_id or secure_url: " + result);
+    }
+
+    return new CloudinaryResponse(publicId, url);
   }
 
   public void delete(String publicId) {

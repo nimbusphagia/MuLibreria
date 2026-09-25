@@ -1,6 +1,6 @@
 package com.nimbusphagia.mu_libreria.model.enums;
 
-public enum MediaType {
+public enum ProductMediaType {
   IMAGE,
   VIDEO
 }

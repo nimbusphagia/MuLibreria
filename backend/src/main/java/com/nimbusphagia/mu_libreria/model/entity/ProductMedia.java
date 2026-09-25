@@ -2,7 +2,7 @@ package com.nimbusphagia.mu_libreria.model.entity;
 
 import com.nimbusphagia.mu_libreria.model.entity.base.BaseEntity;
 import com.nimbusphagia.mu_libreria.model.enums.MediaProvider;
-import com.nimbusphagia.mu_libreria.model.enums.MediaType;
+import com.nimbusphagia.mu_libreria.model.enums.ProductMediaType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,7 +40,7 @@ public class ProductMedia extends BaseEntity {
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
-  private MediaType type;
+  private ProductMediaType type;
 
   private String altText;
 
@@ -50,4 +50,5 @@ public class ProductMedia extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "product_id", nullable = false)
   private Product product;
+
 }
