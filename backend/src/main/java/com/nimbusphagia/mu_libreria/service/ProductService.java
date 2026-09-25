@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nimbusphagia.mu_libreria.exception.BadRequestException;
 import com.nimbusphagia.mu_libreria.exception.ResourceNotFoundException;
 import com.nimbusphagia.mu_libreria.model.dto.request.BookRequest;
+import com.nimbusphagia.mu_libreria.model.dto.request.MediaRequest;
 import com.nimbusphagia.mu_libreria.model.dto.request.WorkshopRequest;
 import com.nimbusphagia.mu_libreria.model.dto.response.MediaResponse;
 import com.nimbusphagia.mu_libreria.model.dto.response.PageResponse;
@@ -42,16 +43,7 @@ public class ProductService {
   public ProductResponse getProduct(UUID publicId) {
     Product product = productRepository.findByPublicId(publicId)
         .orElseThrow(() -> new ResourceNotFoundException("Product not found."));
-    Book book = null;
-    Workshop workshop = null;
-    switch (product.getType()) {
-      case BOOK -> book = bookService.getByProduct(product.getPublicId());
-      case WORKSHOP -> workshop = workshopService.getByProduct(product.getPublicId());
-      case MERCH -> {
-      }
-    }
-    List<MediaResponse> media = mediaService.getByProduct(publicId);
-    return ProductResponse.fromEntity(product, book, workshop, media);
+    return getResponseByType(product, null);
   }
 
   public PageResponse<ProductSummaryResponse> getProducts(int page, int size, String sortBy, ProductType filter) {
@@ -125,9 +117,33 @@ public class ProductService {
   }
 
   // Media
+  @Transactional
+  public ProductResponse addMedia(UUID productId, List<MediaRequest> request) {
+    Product product = productRepository.findByPublicId(productId)
+        .orElseThrow(() -> new BadRequestException("Invalid product ID"));
+    List<MediaResponse> media = request.stream()
+        .map((item) -> mediaService.createAndAttachToProduct(item, product))
+        .toList();
+    return getResponseByType(product, media);
+  }
 
   // Utilities
-  public Boolean exists(UUID productId) {
-    return productRepository.existsByPublicId(productId);
+  private ProductResponse getResponseByType(Product product, List<MediaResponse> media) {
+    Book book = null;
+    Workshop workshop = null;
+    List<MediaResponse> mediaList = media;
+    switch (product.getType()) {
+      case BOOK -> book = bookService.getByProduct(product.getPublicId());
+      case WORKSHOP -> workshop = workshopService.getByProduct(product.getPublicId());
+      case MERCH -> {
+      }
+    }
+    if (mediaList == null) {
+      mediaList = mediaService.getByProduct(product.getPublicId());
+    } else {
+      mediaList = List.of();
+    }
+    return ProductResponse.fromEntity(product, book, workshop, mediaList);
+
   }
 }

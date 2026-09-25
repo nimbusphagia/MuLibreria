@@ -33,7 +33,7 @@ public class ProductMediaService {
 
   // Upload to product
   @Transactional
-  public MediaResponse attachToProduct(MediaRequest request, Product product) {
+  public MediaResponse createAndAttachToProduct(MediaRequest request, Product product) {
     guardMedia(request);
     ProductMedia productMedia = null;
     if (request.type() == ProductMediaType.IMAGE) {
@@ -43,6 +43,7 @@ public class ProductMediaService {
       productMedia = request.toEntity(null, null);
     }
     productMedia.setProduct(product);
+    productMedia = mediaRepository.save(productMedia);
     return MediaResponse.fromEntity(productMedia);
 
   }
@@ -50,7 +51,7 @@ public class ProductMediaService {
   private void guardMedia(MediaRequest request) {
     switch (request.type()) {
       case VIDEO:
-        if (request.url().isBlank() || request.url() == null) {
+        if (request.url() == null || request.url().isBlank()) {
           throw new BadRequestException("Video uploads have to include a url.");
         }
         if (request.provider() != MediaProvider.YOUTUBE) {
