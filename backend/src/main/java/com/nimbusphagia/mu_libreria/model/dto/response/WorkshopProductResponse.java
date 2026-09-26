@@ -6,27 +6,27 @@ import java.util.List;
 import java.util.UUID;
 
 import com.nimbusphagia.mu_libreria.model.entity.Product;
-import com.nimbusphagia.mu_libreria.model.enums.ProductType;
 
-public record ProductSummaryResponse(
-    UUID publicId,
+public record WorkshopProductResponse(
+    UUID productId,
     String name,
     String description,
     BigDecimal price,
     List<MediaResponse> media,
-    ProductType productType,
-    Instant createdAt,
-    Boolean inStock) {
+    String sku,
+    WorkshopDetailsResponse details,
+    Instant createdAt) {
 
-  public static ProductSummaryResponse fromEntity(Product product, List<MediaResponse> media, Boolean available) {
-    return new ProductSummaryResponse(
+  public static WorkshopProductResponse fromEntity(Product product, WorkshopDetailsResponse details,
+      List<MediaResponse> media) {
+    return new WorkshopProductResponse(
         product.getPublicId(),
         product.getName(),
         product.getDescription(),
         product.getPrice(),
         media,
-        product.getType(),
-        product.getCreatedAt(),
-        available);
+        product.getSku(),
+        details,
+        product.getCreatedAt());
   }
 }

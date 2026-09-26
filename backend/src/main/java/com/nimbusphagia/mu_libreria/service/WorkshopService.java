@@ -1,7 +1,9 @@
 package com.nimbusphagia.mu_libreria.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -10,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nimbusphagia.mu_libreria.exception.BadRequestException;
 import com.nimbusphagia.mu_libreria.exception.ResourceNotFoundException;
 import com.nimbusphagia.mu_libreria.model.dto.request.WorkshopDetailsRequest;
-import com.nimbusphagia.mu_libreria.model.dto.response.WorkshopResponse;
+import com.nimbusphagia.mu_libreria.model.dto.response.WorkshopDetailsResponse;
 import com.nimbusphagia.mu_libreria.model.entity.Facilitator;
 import com.nimbusphagia.mu_libreria.model.entity.Product;
 import com.nimbusphagia.mu_libreria.model.entity.Workshop;
@@ -30,24 +32,29 @@ public class WorkshopService {
     return workshopRepository.findByProduct_PublicId(productId);
   }
 
-  public List<WorkshopResponse> getWorkshops(WorkshopStatus status) {
+  public Map<UUID, Workshop> getByProducts(List<UUID> productIds) {
+    return workshopRepository.findAllByProduct_PublicIdIn(productIds).stream()
+        .collect(Collectors.toMap(b -> b.getProduct().getPublicId(), b -> b));
+  }
+
+  public List<WorkshopDetailsResponse> getWorkshops(WorkshopStatus status) {
     Sort sort = Sort.by("createdAt").descending();
     List<Workshop> entities = (status == null)
         ? workshopRepository.findAll(sort)
         : workshopRepository.findByStatus(status);
     return entities.stream()
-        .map(WorkshopResponse::fromEntity)
+        .map(WorkshopDetailsResponse::fromEntity)
         .toList();
   }
 
   // EDIT
   @Transactional
-  public WorkshopResponse editWorkshop(UUID publicId, WorkshopDetailsRequest details) {
+  public WorkshopDetailsResponse editWorkshop(UUID publicId, WorkshopDetailsRequest details) {
     Workshop existingWorkshop = workshopRepository.findByPublicId(publicId)
         .orElseThrow(() -> new ResourceNotFoundException("Workshop not found."));
     Facilitator facilitator = facilitatorService.getFacilitator(details.facilitatorId());
     existingWorkshop.updateFrom(details, facilitator);
-    return WorkshopResponse.fromEntity(workshopRepository.save(existingWorkshop));
+    return WorkshopDetailsResponse.fromEntity(workshopRepository.save(existingWorkshop));
   }
 
   // For product creation
@@ -58,5 +65,9 @@ public class WorkshopService {
     Facilitator facilitator = facilitatorService.getFacilitator(details.facilitatorId());
     Workshop workshop = details.toEntity(product, facilitator);
     return workshopRepository.save(workshop);
+  }
+
+  public Boolean isAvailable(UUID productId) {
+    return workshopRepository.existsByStatusAndProduct_PublicId(productId, WorkshopStatus.REGISTRATION_OPEN);
   }
 }

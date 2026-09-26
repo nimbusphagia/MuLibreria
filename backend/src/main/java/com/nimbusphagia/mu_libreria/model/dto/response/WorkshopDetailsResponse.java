@@ -7,7 +7,7 @@ import java.util.UUID;
 import com.nimbusphagia.mu_libreria.model.entity.Workshop;
 import com.nimbusphagia.mu_libreria.model.enums.WorkshopStatus;
 
-public record WorkshopResponse(
+public record WorkshopDetailsResponse(
     UUID publicId,
     String title,
     String description,
@@ -19,8 +19,8 @@ public record WorkshopResponse(
     WorkshopStatus status,
     Instant createdAt) {
 
-  public static WorkshopResponse fromEntity(Workshop workshop) {
-    return new WorkshopResponse(
+  public static WorkshopDetailsResponse fromEntity(Workshop workshop) {
+    return new WorkshopDetailsResponse(
         workshop.getPublicId(),
         workshop.getTitle(),
         workshop.getDescription(),

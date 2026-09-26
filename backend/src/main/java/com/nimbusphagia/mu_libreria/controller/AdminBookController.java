@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nimbusphagia.mu_libreria.model.dto.request.BookDetailsRequest;
 import com.nimbusphagia.mu_libreria.model.dto.request.BookRequest;
-import com.nimbusphagia.mu_libreria.model.dto.response.BookResponse;
+import com.nimbusphagia.mu_libreria.model.dto.response.BookDetailsResponse;
 import com.nimbusphagia.mu_libreria.model.dto.response.ProductResponse;
 import com.nimbusphagia.mu_libreria.service.BookService;
 import com.nimbusphagia.mu_libreria.service.ProductService;
@@ -36,7 +36,7 @@ public class AdminBookController {
 
   @PutMapping("/{publicId}")
   @ResponseStatus(HttpStatus.OK)
-  public BookResponse editDetails(@PathVariable UUID publicId, @RequestBody @Valid BookDetailsRequest request) {
+  public BookDetailsResponse editDetails(@PathVariable UUID publicId, @RequestBody @Valid BookDetailsRequest request) {
     return bookService.editBook(publicId, request);
   }
 }

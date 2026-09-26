@@ -8,4 +8,6 @@ import com.nimbusphagia.mu_libreria.repository.base.BaseRepository;
 
 public interface MediaRepository extends BaseRepository<ProductMedia, Long> {
   List<ProductMedia> findAllByProduct_PublicIdOrderByPositionAsc(UUID productId);
+
+  List<ProductMedia> findAllByProduct_PublicIdIn(List<UUID> productIds);
 }

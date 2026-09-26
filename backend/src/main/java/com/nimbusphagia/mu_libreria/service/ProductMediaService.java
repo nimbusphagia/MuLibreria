@@ -1,7 +1,9 @@
 package com.nimbusphagia.mu_libreria.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +33,13 @@ public class ProductMediaService {
     return media.stream().map(MediaResponse::fromEntity).toList();
   }
 
+  public Map<UUID, List<MediaResponse>> getByProducts(List<UUID> productIds) {
+    return mediaRepository.findAllByProduct_PublicIdIn(productIds).stream()
+        .collect(Collectors.groupingBy(
+            m -> m.getProduct().getPublicId(),
+            Collectors.mapping(MediaResponse::fromEntity, Collectors.toList())));
+  }
+
   // Upload to product
   @Transactional
   public MediaResponse createAndAttachToProduct(MediaRequest request, Product product) {
@@ -45,7 +54,6 @@ public class ProductMediaService {
     productMedia.setProduct(product);
     productMedia = mediaRepository.save(productMedia);
     return MediaResponse.fromEntity(productMedia);
-
   }
 
   private void guardMedia(MediaRequest request) {
