@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.nimbusphagia.mu_libreria.exception.BadRequestException;
-import com.nimbusphagia.mu_libreria.model.dto.response.CloudinaryResponse;
+import com.nimbusphagia.mu_libreria.model.dto.product.media.CloudinaryResponse;
 
 import lombok.RequiredArgsConstructor;
 

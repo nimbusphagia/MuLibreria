@@ -2,7 +2,7 @@ package com.nimbusphagia.mu_libreria.model.entity;
 
 import java.time.LocalDateTime;
 
-import com.nimbusphagia.mu_libreria.model.dto.request.WorkshopDetailsRequest;
+import com.nimbusphagia.mu_libreria.model.dto.product.workshop.WorkshopDetailsRequest;
 import com.nimbusphagia.mu_libreria.model.entity.base.BaseEntity;
 import com.nimbusphagia.mu_libreria.model.enums.WorkshopStatus;
 

@@ -13,17 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nimbusphagia.mu_libreria.exception.BadRequestException;
-import com.nimbusphagia.mu_libreria.model.dto.request.BookRequest;
-import com.nimbusphagia.mu_libreria.model.dto.request.MediaRequest;
-import com.nimbusphagia.mu_libreria.model.dto.request.WorkshopRequest;
-import com.nimbusphagia.mu_libreria.model.dto.response.BookDetailsResponse;
-import com.nimbusphagia.mu_libreria.model.dto.response.BookProductResponse;
-import com.nimbusphagia.mu_libreria.model.dto.response.MediaResponse;
-import com.nimbusphagia.mu_libreria.model.dto.response.PageResponse;
-import com.nimbusphagia.mu_libreria.model.dto.response.ProductResponse;
-import com.nimbusphagia.mu_libreria.model.dto.response.ProductSummaryResponse;
-import com.nimbusphagia.mu_libreria.model.dto.response.WorkshopDetailsResponse;
-import com.nimbusphagia.mu_libreria.model.dto.response.WorkshopProductResponse;
+import com.nimbusphagia.mu_libreria.model.dto.page.PageResponse;
+import com.nimbusphagia.mu_libreria.model.dto.product.*;
+import com.nimbusphagia.mu_libreria.model.dto.product.book.*;
+import com.nimbusphagia.mu_libreria.model.dto.product.workshop.*;
+import com.nimbusphagia.mu_libreria.model.dto.product.media.MediaRequest;
+import com.nimbusphagia.mu_libreria.model.dto.product.media.MediaResponse;
 import com.nimbusphagia.mu_libreria.model.entity.Book;
 import com.nimbusphagia.mu_libreria.model.entity.Product;
 import com.nimbusphagia.mu_libreria.model.entity.Workshop;
@@ -45,7 +40,7 @@ public class ProductService {
 
   // Details
   @Transactional
-  public ProductSummaryResponse editProductDetails(UUID publicId, BookRequest bookRequest,
+  public ProductResponse editProduct(UUID publicId, BookRequest bookRequest,
       WorkshopRequest workshopRequest) {
     Product existingProduct = productRepository.findByPublicId(publicId)
         .orElseThrow(() -> new BadRequestException("Product not found."));

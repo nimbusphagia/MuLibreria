@@ -1,6 +1,6 @@
 package com.nimbusphagia.mu_libreria.model.entity;
 
-import com.nimbusphagia.mu_libreria.model.dto.request.BookDetailsRequest;
+import com.nimbusphagia.mu_libreria.model.dto.product.book.BookDetailsRequest;
 import com.nimbusphagia.mu_libreria.model.entity.base.BaseEntity;
 
 import java.util.HashSet;

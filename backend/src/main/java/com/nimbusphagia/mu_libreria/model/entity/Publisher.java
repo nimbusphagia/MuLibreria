@@ -1,6 +1,6 @@
 package com.nimbusphagia.mu_libreria.model.entity;
 
-import com.nimbusphagia.mu_libreria.model.dto.request.PublisherRequest;
+import com.nimbusphagia.mu_libreria.model.dto.publisher.PublisherRequest;
 import com.nimbusphagia.mu_libreria.model.entity.base.BaseEntity;
 
 import jakarta.persistence.Column;

@@ -11,10 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nimbusphagia.mu_libreria.exception.BadRequestException;
 import com.nimbusphagia.mu_libreria.exception.ResourceNotFoundException;
-import com.nimbusphagia.mu_libreria.model.dto.request.BookDetailsRequest;
-import com.nimbusphagia.mu_libreria.model.dto.response.BookDetailsResponse;
 import com.nimbusphagia.mu_libreria.model.entity.Author;
 import com.nimbusphagia.mu_libreria.model.entity.Book;
+import com.nimbusphagia.mu_libreria.model.dto.product.book.BookDetailsRequest;
+import com.nimbusphagia.mu_libreria.model.dto.product.book.BookDetailsResponse;
 import com.nimbusphagia.mu_libreria.model.entity.Genre;
 import com.nimbusphagia.mu_libreria.model.entity.Product;
 import com.nimbusphagia.mu_libreria.model.entity.Publisher;

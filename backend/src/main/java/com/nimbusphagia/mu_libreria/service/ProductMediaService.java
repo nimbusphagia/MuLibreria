@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nimbusphagia.mu_libreria.exception.BadRequestException;
-import com.nimbusphagia.mu_libreria.model.dto.request.MediaRequest;
-import com.nimbusphagia.mu_libreria.model.dto.response.CloudinaryResponse;
-import com.nimbusphagia.mu_libreria.model.dto.response.MediaResponse;
+import com.nimbusphagia.mu_libreria.model.dto.product.media.MediaRequest;
+import com.nimbusphagia.mu_libreria.model.dto.product.media.CloudinaryResponse;
+import com.nimbusphagia.mu_libreria.model.dto.product.media.MediaResponse;
 import com.nimbusphagia.mu_libreria.model.entity.Product;
 import com.nimbusphagia.mu_libreria.model.entity.ProductMedia;
 import com.nimbusphagia.mu_libreria.model.enums.MediaProvider;

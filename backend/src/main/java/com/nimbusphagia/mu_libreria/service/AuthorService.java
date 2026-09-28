@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nimbusphagia.mu_libreria.exception.ResourceNotFoundException;
-import com.nimbusphagia.mu_libreria.model.dto.request.AuthorRequest;
-import com.nimbusphagia.mu_libreria.model.dto.response.AuthorResponse;
+import com.nimbusphagia.mu_libreria.model.dto.author.AuthorRequest;
+import com.nimbusphagia.mu_libreria.model.dto.author.AuthorResponse;
 import com.nimbusphagia.mu_libreria.model.entity.Author;
 import com.nimbusphagia.mu_libreria.repository.AuthorRepository;
 
