@@ -5,38 +5,32 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-import com.nimbusphagia.mu_libreria.model.entity.Book;
-import com.nimbusphagia.mu_libreria.model.entity.Product;
-import com.nimbusphagia.mu_libreria.model.entity.Workshop;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.nimbusphagia.mu_libreria.model.enums.Availability;
 import com.nimbusphagia.mu_libreria.model.enums.ProductType;
 
-public record ProductResponse(
-    UUID publicId,
-    String name,
-    String description,
-    BigDecimal price,
-    List<MediaResponse> media,
-    String sku,
-    Integer totalStock,
-    Integer availableStock,
-    ProductType productType,
-    BookDetailsResponse book,
-    WorkshopDetailsResponse workshop,
-    Instant createdAt) {
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "productType")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = BookProductResponse.class, name = "BOOK"),
+    @JsonSubTypes.Type(value = WorkshopProductResponse.class, name = "WORKSHOP")
+})
+public sealed interface ProductResponse permits BookProductResponse, WorkshopProductResponse {
+  UUID publicId();
 
-  public static ProductResponse fromEntity(Product product, Book book, Workshop workshop, List<MediaResponse> media) {
-    return new ProductResponse(
-        product.getPublicId(),
-        product.getName(),
-        product.getDescription(),
-        product.getPrice(),
-        media,
-        product.getSku(),
-        product.getTotalStock(),
-        product.getAvailableStock(),
-        product.getType(),
-        book != null ? BookDetailsResponse.fromEntity(book) : null,
-        workshop != null ? WorkshopDetailsResponse.fromEntity(workshop) : null,
-        product.getCreatedAt());
-  }
+  String name();
+
+  String description();
+
+  BigDecimal price();
+
+  List<MediaResponse> media();
+
+  String sku();
+
+  ProductType productType();
+
+  Availability availability();
+
+  Instant createdAt();
 }

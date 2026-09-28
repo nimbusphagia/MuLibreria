@@ -5,32 +5,35 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
+import com.nimbusphagia.mu_libreria.model.entity.Book;
 import com.nimbusphagia.mu_libreria.model.entity.Product;
+import com.nimbusphagia.mu_libreria.model.enums.Availability;
+import com.nimbusphagia.mu_libreria.model.enums.ProductType;
 
 public record BookProductResponse(
-    UUID productId,
+    UUID publicId,
     String name,
     String description,
     BigDecimal price,
     List<MediaResponse> media,
-    BookDetailsResponse details,
     String sku,
+    ProductType productType,
+    Availability availability,
+    Instant createdAt,
     Integer totalStock,
-    Integer availableStock,
-    Instant createdAt) {
+    Integer availableStock) implements ProductResponse {
 
-  public static BookProductResponse fromEntity(Product product, BookDetailsResponse details,
-      List<MediaResponse> media) {
+  private static final int LOW_STOCK_THRESHOLD = 3;
+
+  public static BookProductResponse fromEntity(Product p, List<MediaResponse> media) {
+    int available = p.getAvailableStock();
+    Availability availability = available <= 0 ? Availability.SOLD_OUT
+        : available <= LOW_STOCK_THRESHOLD ? Availability.LOW_STOCK
+            : Availability.IN_STOCK;
+
     return new BookProductResponse(
-        product.getPublicId(),
-        product.getName(),
-        product.getDescription(),
-        product.getPrice(),
-        media,
-        details,
-        product.getSku(),
-        product.getTotalStock(),
-        product.getAvailableStock(),
-        product.getCreatedAt());
+        p.getPublicId(), p.getName(), p.getDescription(), p.getPrice(), media,
+        p.getSku(), p.getType(), availability, p.getCreatedAt(),
+        p.getTotalStock(), available);
   }
 }
