@@ -38,7 +38,7 @@ public class ProductService {
   private final ProductResponseMapper productResponseMapper;
   private static final Set<String> SORTABLE = Set.of("name", "price", "createdAt");
 
-  // Details
+  // Product only
   @Transactional
   public ProductResponse editProduct(UUID productId, EditProductRequest request) {
     Product product = productRepository.findByPublicId(productId)
@@ -47,6 +47,13 @@ public class ProductService {
     List<MediaResponse> media = mediaService.getByProduct(productId);
     WorkshopDetailsResponse details = workshopService.getByProduct(productId);
     return productResponseMapper.toResponse(product, null, details, media);
+  }
+
+  public void restoreProduct(UUID productId) {
+    int rowsUpdated = productRepository.restoreByPublicId(productId);
+
+    if (rowsUpdated == 0)
+      throw new BadRequestException("Could not restore. Product not found with publicId: " + productId);
   }
 
   // Workshops
