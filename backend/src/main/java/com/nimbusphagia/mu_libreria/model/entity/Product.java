@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import com.nimbusphagia.mu_libreria.model.dto.product.EditProductRequest;
 import com.nimbusphagia.mu_libreria.model.entity.base.SoftDeletableEntity;
 import com.nimbusphagia.mu_libreria.model.enums.ProductType;
 
@@ -41,7 +42,6 @@ public class Product extends SoftDeletableEntity {
   @Column(unique = true)
   private String sku;
 
-  // totalStock/availableStock apply only to BOOK and MERCH products.
   @Column(nullable = true)
   private Integer totalStock;
 
@@ -52,21 +52,14 @@ public class Product extends SoftDeletableEntity {
   @Column(nullable = false)
   private ProductType type;
 
-  /*
-   * public void updateFrom(BookRequest book, WorkshopRequest workshop) {
-   * if (book != null) {
-   * this.name = book.name();
-   * this.description = book.description();
-   * this.price = book.price();
-   * this.sku = book.sku();
-   * this.totalStock = book.totalStock();
-   * this.availableStock = book.availableStock();
-   * } else if (workshop != null) {
-   * this.name = workshop.name();
-   * this.description = workshop.description();
-   * this.price = workshop.price();
-   * this.sku = workshop.sku();
-   * }
-   * }
-   */
+  public void updateFrom(EditProductRequest p) {
+    this.name = p.name();
+    this.description = p.description();
+    this.price = p.price();
+    this.sku = p.sku();
+    if (p.type() != ProductType.WORKSHOP) {
+      this.totalStock = p.totalStock();
+      this.availableStock = p.availableStock();
+    }
+  }
 }

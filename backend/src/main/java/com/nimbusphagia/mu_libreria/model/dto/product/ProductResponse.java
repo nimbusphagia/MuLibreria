@@ -11,7 +11,7 @@ import com.nimbusphagia.mu_libreria.model.dto.product.media.MediaResponse;
 import com.nimbusphagia.mu_libreria.model.enums.Availability;
 import com.nimbusphagia.mu_libreria.model.enums.ProductType;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "productType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, visible = true, property = "productType")
 @JsonSubTypes({
     @JsonSubTypes.Type(value = BookProductResponse.class, name = "BOOK"),
     @JsonSubTypes.Type(value = WorkshopProductResponse.class, name = "WORKSHOP")

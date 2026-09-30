@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nimbusphagia.mu_libreria.exception.ConflictException;
-import com.nimbusphagia.mu_libreria.model.dto.request.RegisterRequest;
+import com.nimbusphagia.mu_libreria.model.dto.user.auth.RegisterRequest;
 import com.nimbusphagia.mu_libreria.model.entity.User;
 import com.nimbusphagia.mu_libreria.model.enums.UserRole;
 import com.nimbusphagia.mu_libreria.repository.UserRepository;

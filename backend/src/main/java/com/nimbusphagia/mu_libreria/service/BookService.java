@@ -31,8 +31,9 @@ public class BookService {
   private final GenreService genreService;
 
   // GET
-  public Book getByProduct(UUID productId) {
-    return bookRepository.findByProduct_PublicId(productId);
+  public BookDetailsResponse getByProduct(UUID productId) {
+    Book book = bookRepository.findByProduct_PublicId(productId);
+    return BookDetailsResponse.fromEntity(book);
   }
 
   public Map<UUID, Book> getByProducts(List<UUID> productIds) {
@@ -56,7 +57,7 @@ public class BookService {
 
   // For Product Creation
   @Transactional
-  public Book createAndAttach(Product product, BookDetailsRequest request) {
+  public BookDetailsResponse createAndAttach(Product product, BookDetailsRequest request) {
     if (request == null) {
       throw new BadRequestException("Book details are required for products.");
     }
@@ -66,7 +67,7 @@ public class BookService {
     Set<Genre> genres = genreService.resolveGenres(request.genreIds());
 
     Book book = Book.from(request, author, publisher, genres, product);
-
-    return bookRepository.save(book);
+    bookRepository.save(book);
+    return BookDetailsResponse.fromEntity(book);
   }
 }

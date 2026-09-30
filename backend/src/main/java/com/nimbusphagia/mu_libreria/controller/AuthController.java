@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nimbusphagia.mu_libreria.model.dto.response.LoginResponse;
-import com.nimbusphagia.mu_libreria.model.dto.request.LoginRequest;
-import com.nimbusphagia.mu_libreria.model.dto.request.RegisterRequest;
+import com.nimbusphagia.mu_libreria.model.dto.user.auth.LoginRequest;
+import com.nimbusphagia.mu_libreria.model.dto.user.auth.LoginResponse;
+import com.nimbusphagia.mu_libreria.model.dto.user.auth.RegisterRequest;
 import com.nimbusphagia.mu_libreria.model.entity.User;
 import com.nimbusphagia.mu_libreria.model.enums.UserRole;
 import com.nimbusphagia.mu_libreria.security.JwtService;

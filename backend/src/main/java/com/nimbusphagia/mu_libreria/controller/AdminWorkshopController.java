@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nimbusphagia.mu_libreria.model.dto.request.WorkshopDetailsRequest;
-import com.nimbusphagia.mu_libreria.model.dto.request.WorkshopRequest;
-import com.nimbusphagia.mu_libreria.model.dto.response.ProductResponse;
-import com.nimbusphagia.mu_libreria.model.dto.response.WorkshopDetailsResponse;
+import com.nimbusphagia.mu_libreria.model.dto.product.CreateWorkshopRequest;
+import com.nimbusphagia.mu_libreria.model.dto.product.WorkshopProductResponse;
+import com.nimbusphagia.mu_libreria.model.dto.product.workshop.WorkshopDetailsRequest;
+import com.nimbusphagia.mu_libreria.model.dto.product.workshop.WorkshopDetailsResponse;
 import com.nimbusphagia.mu_libreria.service.ProductService;
 import com.nimbusphagia.mu_libreria.service.WorkshopService;
 
@@ -30,7 +30,7 @@ public class AdminWorkshopController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public ProductResponse create(@RequestBody @Valid WorkshopRequest request) {
+  public WorkshopProductResponse create(@RequestBody @Valid CreateWorkshopRequest request) {
     return productService.createWorkshop(request);
   }
 

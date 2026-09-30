@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nimbusphagia.mu_libreria.model.dto.request.BookDetailsRequest;
-import com.nimbusphagia.mu_libreria.model.dto.request.BookRequest;
-import com.nimbusphagia.mu_libreria.model.dto.response.BookDetailsResponse;
-import com.nimbusphagia.mu_libreria.model.dto.response.ProductResponse;
+import com.nimbusphagia.mu_libreria.model.dto.product.BookProductResponse;
+import com.nimbusphagia.mu_libreria.model.dto.product.CreateBookRequest;
+import com.nimbusphagia.mu_libreria.model.dto.product.book.BookDetailsRequest;
+import com.nimbusphagia.mu_libreria.model.dto.product.book.BookDetailsResponse;
 import com.nimbusphagia.mu_libreria.service.BookService;
 import com.nimbusphagia.mu_libreria.service.ProductService;
 
@@ -30,7 +30,7 @@ public class AdminBookController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public ProductResponse createBook(@RequestBody @Valid BookRequest request) {
+  public BookProductResponse createBook(@RequestBody @Valid CreateBookRequest request) {
     return productService.createBook(request);
   }
 

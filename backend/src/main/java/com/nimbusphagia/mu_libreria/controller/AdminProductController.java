@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nimbusphagia.mu_libreria.model.dto.request.BookRequest;
-import com.nimbusphagia.mu_libreria.model.dto.request.MediaRequest;
-import com.nimbusphagia.mu_libreria.model.dto.request.WorkshopRequest;
-import com.nimbusphagia.mu_libreria.model.dto.response.ProductResponse;
-import com.nimbusphagia.mu_libreria.model.dto.response.ProductSummaryResponse;
+import com.nimbusphagia.mu_libreria.model.dto.product.BaseProductResponse;
+import com.nimbusphagia.mu_libreria.model.dto.product.EditProductRequest;
+import com.nimbusphagia.mu_libreria.model.dto.product.ProductResponse;
+import com.nimbusphagia.mu_libreria.model.dto.product.media.MediaRequest;
 import com.nimbusphagia.mu_libreria.service.ProductService;
 
 import jakarta.validation.Valid;
@@ -30,27 +29,21 @@ public class AdminProductController {
   private final ProductService productService;
 
   // EDIT
-  @PutMapping("/book/{publicId}")
+  @PutMapping("/{publicId}")
   @ResponseStatus(HttpStatus.OK)
-  public ProductSummaryResponse editBookProduct(
+  public ProductResponse editProduct(
       @PathVariable UUID publicId,
-      @RequestBody @Valid BookRequest request) {
-    return productService.editProductDetails(publicId, request, null);
-  }
-
-  @PutMapping("/workshop/{publicId}")
-  @ResponseStatus(HttpStatus.OK)
-  public ProductSummaryResponse editWorkshopProduct(
-      @PathVariable UUID publicId,
-      @RequestBody @Valid WorkshopRequest request) {
-    return productService.editProductDetails(publicId, null, request);
+      @RequestBody @Valid EditProductRequest request) {
+    return productService.editProduct(publicId, request);
   }
 
   // Media
   @PostMapping("/{publicId}/media")
   @ResponseStatus(HttpStatus.CREATED)
-  public ProductResponse uploadMedia(@RequestBody @Valid List<MediaRequest> request) {
-
+  public BaseProductResponse uploadMedia(
+      @PathVariable UUID publicId,
+      @RequestBody @Valid List<MediaRequest> request) {
+    return productService.addMedia(publicId, request);
   }
 
 }
