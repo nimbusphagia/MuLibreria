@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nimbusphagia.mu_libreria.exception.BadRequestException;
 import com.nimbusphagia.mu_libreria.exception.ResourceNotFoundException;
 import com.nimbusphagia.mu_libreria.model.dto.facilitator.FacilitatorRequest;
 import com.nimbusphagia.mu_libreria.model.dto.facilitator.FacilitatorResponse;
@@ -20,28 +21,28 @@ import lombok.RequiredArgsConstructor;
 public class FacilitatorService {
   private final FacilitatorRepository facilitatorRepository;
 
-  public FacilitatorResponse createFacilitator(FacilitatorRequest request) {
-    Facilitator entity = facilitatorRepository.save(request.toEntity());
-    return FacilitatorResponse.fromEntity(entity);
+  public FacilitatorResponse create(FacilitatorRequest request) {
+    Facilitator facilitator = facilitatorRepository.save(request.toEntity());
+    return FacilitatorResponse.fromEntity(facilitator);
   }
 
   @Transactional
-  public FacilitatorResponse editFacilitator(UUID publicId, FacilitatorRequest request) {
-    Facilitator existingFacilitator = facilitatorRepository.findByPublicId(publicId)
-        .orElseThrow(() -> new ResourceNotFoundException("Facilitator not found."));
-    existingFacilitator.updateFrom(request);
-    facilitatorRepository.save(existingFacilitator);
-    return FacilitatorResponse.fromEntity(existingFacilitator);
+  public FacilitatorResponse edit(UUID publicId, FacilitatorRequest request) {
+    Facilitator facilitator = facilitatorRepository.findByPublicId(publicId)
+        .orElseThrow(() -> new BadRequestException("Facilitator not found."));
+    facilitator.updateFrom(request);
+    facilitatorRepository.save(facilitator);
+    return FacilitatorResponse.fromEntity(facilitator);
   }
 
-  public List<FacilitatorResponse> getFacilitators() {
-    List<Facilitator> entities = facilitatorRepository.findAll(Sort.by("lastName", "name"));
-    return entities.stream()
+  public List<FacilitatorResponse> getAll() {
+    List<Facilitator> facilitators = facilitatorRepository.findAll(Sort.by("lastName", "name"));
+    return facilitators.stream()
         .map(FacilitatorResponse::fromEntity)
         .toList();
   }
 
-  public Facilitator getFacilitator(UUID facilitatorId) {
+  public Facilitator getByPublicId(UUID facilitatorId) {
     return facilitatorRepository.findByPublicId(facilitatorId)
         .orElseThrow(() -> new ResourceNotFoundException("Invalid facilitator."));
 

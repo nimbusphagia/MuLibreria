@@ -20,18 +20,18 @@ import lombok.RequiredArgsConstructor;
 public class PublisherService {
   private final PublisherRepository publisherRepository;
 
-  public PublisherResponse createPublisher(PublisherRequest request) {
-    Publisher entity = publisherRepository.save(request.toEntity());
-    return PublisherResponse.fromEntity(entity);
+  public PublisherResponse create(PublisherRequest request) {
+    Publisher publisher = publisherRepository.save(request.toEntity());
+    return PublisherResponse.fromEntity(publisher);
   }
 
   @Transactional
-  public PublisherResponse editPublisher(UUID publicId, PublisherRequest request) {
-    Publisher existingPublisher = publisherRepository.findByPublicId(publicId)
+  public PublisherResponse edit(UUID publicId, PublisherRequest request) {
+    Publisher publisher = publisherRepository.findByPublicId(publicId)
         .orElseThrow(() -> new ResourceNotFoundException("Publisher not found."));
-    existingPublisher.updateFrom(request);
-    publisherRepository.save(existingPublisher);
-    return PublisherResponse.fromEntity(existingPublisher);
+    publisher.updateFrom(request);
+    publisherRepository.save(publisher);
+    return PublisherResponse.fromEntity(publisher);
   }
 
   public Publisher getByPublicId(UUID publicId) {
@@ -39,9 +39,9 @@ public class PublisherService {
         .orElseThrow(() -> new ResourceNotFoundException("Invalid publisher"));
   }
 
-  public List<PublisherResponse> getPublishers() {
-    List<Publisher> entities = publisherRepository.findAll(Sort.by("name"));
-    return entities.stream()
+  public List<PublisherResponse> getAll() {
+    List<Publisher> publishers = publisherRepository.findAll(Sort.by("name"));
+    return publishers.stream()
         .map(PublisherResponse::fromEntity)
         .toList();
   }

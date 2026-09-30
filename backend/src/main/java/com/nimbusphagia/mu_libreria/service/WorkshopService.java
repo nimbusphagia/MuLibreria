@@ -43,24 +43,22 @@ public class WorkshopService {
             w -> WorkshopDetailsResponse.fromEntity(w)));
   }
 
-  public List<WorkshopDetailsResponse> getWorkshops(WorkshopStatus status) {
+  public List<WorkshopDetailsResponse> getAll(WorkshopStatus status) {
     Sort sort = Sort.by("createdAt").descending();
-    List<Workshop> entities = (status == null)
+    List<Workshop> workshops = (status == null)
         ? workshopRepository.findAll(sort)
         : workshopRepository.findByStatus(status);
-    return entities.stream()
-        .map(WorkshopDetailsResponse::fromEntity)
-        .toList();
+    return workshops.stream().map(WorkshopDetailsResponse::fromEntity).toList();
   }
 
   // EDIT
   @Transactional
-  public WorkshopDetailsResponse editWorkshop(UUID publicId, WorkshopDetailsRequest details) {
-    Workshop existingWorkshop = workshopRepository.findByPublicId(publicId)
+  public WorkshopDetailsResponse editDetails(UUID publicId, WorkshopDetailsRequest details) {
+    Workshop workshop = workshopRepository.findByPublicId(publicId)
         .orElseThrow(() -> new ResourceNotFoundException("Workshop not found."));
-    Facilitator facilitator = facilitatorService.getFacilitator(details.facilitatorId());
-    existingWorkshop.updateFrom(details, facilitator);
-    return WorkshopDetailsResponse.fromEntity(workshopRepository.save(existingWorkshop));
+    Facilitator facilitator = facilitatorService.getByPublicId(details.facilitatorId());
+    workshop.updateFrom(details, facilitator);
+    return WorkshopDetailsResponse.fromEntity(workshopRepository.save(workshop));
   }
 
   // For product creation
@@ -69,7 +67,7 @@ public class WorkshopService {
     if (details == null) {
       throw new BadRequestException("Workshop details are required.");
     }
-    Facilitator facilitator = facilitatorService.getFacilitator(details.facilitatorId());
+    Facilitator facilitator = facilitatorService.getByPublicId(details.facilitatorId());
     Workshop workshop = details.toEntity(product, facilitator);
     workshopRepository.save(workshop);
     return WorkshopDetailsResponse.fromEntity(workshop);

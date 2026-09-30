@@ -43,16 +43,16 @@ public class BookService {
 
   // EDIT
   @Transactional
-  public BookDetailsResponse editBook(UUID publicId, BookDetailsRequest request) {
-    Book existingBook = bookRepository.findByPublicId(publicId)
+  public BookDetailsResponse editDetails(UUID publicId, BookDetailsRequest request) {
+    Book book = bookRepository.findByPublicId(publicId)
         .orElseThrow(() -> new ResourceNotFoundException("Book not found."));
 
     Author author = authorService.getByPublicId(request.authorId());
     Publisher publisher = publisherService.getByPublicId(request.publisherId());
     Set<Genre> genres = genreService.resolveGenres(request.genreIds());
 
-    existingBook.updateFrom(request, author, publisher, genres);
-    return BookDetailsResponse.fromEntity(existingBook);
+    book.updateFrom(request, author, publisher, genres);
+    return BookDetailsResponse.fromEntity(book);
   }
 
   // For Product Creation

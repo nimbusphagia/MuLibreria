@@ -14,39 +14,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nimbusphagia.mu_libreria.model.dto.author.AuthorRequest;
-import com.nimbusphagia.mu_libreria.model.dto.author.AuthorResponse;
-import com.nimbusphagia.mu_libreria.service.AuthorService;
+import com.nimbusphagia.mu_libreria.model.dto.genre.GenreRequest;
+import com.nimbusphagia.mu_libreria.model.dto.genre.GenreResponse;
+import com.nimbusphagia.mu_libreria.service.GenreService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/authors")
+@RequestMapping("/genres")
 @RequiredArgsConstructor
-public class AuthorController {
-  private final AuthorService authorService;
+public class GenreController {
+  private final GenreService genreService;
 
   // Admin restricted
   @PostMapping
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.CREATED)
-  public AuthorResponse create(@RequestBody @Valid AuthorRequest request) {
-    return authorService.create(request);
+  public GenreResponse create(@RequestBody @Valid GenreRequest request) {
+    return genreService.create(request);
   }
 
-  @PutMapping("/{authorId}")
+  @PutMapping("/{genreId}")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.OK)
-  public AuthorResponse edit(
-      @PathVariable("authorId") UUID authorId,
-      @RequestBody @Valid AuthorRequest request) {
-    return authorService.edit(authorId, request);
+  public GenreResponse edit(
+      @PathVariable("genreId") UUID genreId,
+      @RequestBody @Valid GenreRequest request) {
+    return genreService.edit(genreId, request);
   }
 
   // Public
   @GetMapping
-  public List<AuthorResponse> getAll() {
-    return authorService.getAll();
+  public List<GenreResponse> getAll() {
+    return genreService.getAll();
   }
 }

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nimbusphagia.mu_libreria.exception.BadRequestException;
 import com.nimbusphagia.mu_libreria.exception.ResourceNotFoundException;
 import com.nimbusphagia.mu_libreria.model.dto.author.AuthorRequest;
 import com.nimbusphagia.mu_libreria.model.dto.author.AuthorResponse;
@@ -20,18 +21,18 @@ import lombok.RequiredArgsConstructor;
 public class AuthorService {
   private final AuthorRepository authorRepository;
 
-  public AuthorResponse createAuthor(AuthorRequest request) {
-    Author entity = authorRepository.save(request.toEntity());
-    return AuthorResponse.fromEntity(entity);
+  public AuthorResponse create(AuthorRequest request) {
+    Author author = authorRepository.save(request.toEntity());
+    return AuthorResponse.fromEntity(author);
   }
 
   @Transactional
-  public AuthorResponse editAuthor(UUID publicId, AuthorRequest request) {
-    Author existingAuthor = authorRepository.findByPublicId(publicId)
-        .orElseThrow(() -> new ResourceNotFoundException("Author not found."));
-    existingAuthor.updateFrom(request);
-    authorRepository.save(existingAuthor);
-    return AuthorResponse.fromEntity(existingAuthor);
+  public AuthorResponse edit(UUID publicId, AuthorRequest request) {
+    Author author = authorRepository.findByPublicId(publicId)
+        .orElseThrow(() -> new BadRequestException("Author not found."));
+    author.updateFrom(request);
+    authorRepository.save(author);
+    return AuthorResponse.fromEntity(author);
   }
 
   public Author getByPublicId(UUID publicId) {
@@ -39,9 +40,9 @@ public class AuthorService {
         .orElseThrow(() -> new ResourceNotFoundException("Invalid author"));
   }
 
-  public List<AuthorResponse> getAuthors() {
-    List<Author> entities = authorRepository.findAll(Sort.by("lastName", "name"));
-    return entities.stream()
+  public List<AuthorResponse> getAll() {
+    List<Author> authors = authorRepository.findAll(Sort.by("lastName", "name"));
+    return authors.stream()
         .map(AuthorResponse::fromEntity)
         .toList();
   }

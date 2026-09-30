@@ -14,39 +14,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nimbusphagia.mu_libreria.model.dto.author.AuthorRequest;
-import com.nimbusphagia.mu_libreria.model.dto.author.AuthorResponse;
-import com.nimbusphagia.mu_libreria.service.AuthorService;
+import com.nimbusphagia.mu_libreria.model.dto.publisher.PublisherRequest;
+import com.nimbusphagia.mu_libreria.model.dto.publisher.PublisherResponse;
+import com.nimbusphagia.mu_libreria.service.PublisherService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/authors")
+@RequestMapping("/publishers")
 @RequiredArgsConstructor
-public class AuthorController {
-  private final AuthorService authorService;
+public class PublisherController {
+  private final PublisherService publisherService;
 
   // Admin restricted
   @PostMapping
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.CREATED)
-  public AuthorResponse create(@RequestBody @Valid AuthorRequest request) {
-    return authorService.create(request);
+  public PublisherResponse create(@RequestBody @Valid PublisherRequest request) {
+    return publisherService.create(request);
   }
 
-  @PutMapping("/{authorId}")
+  @PutMapping("/{publisherId}")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.OK)
-  public AuthorResponse edit(
-      @PathVariable("authorId") UUID authorId,
-      @RequestBody @Valid AuthorRequest request) {
-    return authorService.edit(authorId, request);
+  public PublisherResponse edit(
+      @PathVariable("publisherId") UUID publisherId,
+      @RequestBody @Valid PublisherRequest request) {
+    return publisherService.edit(publisherId, request);
   }
 
   // Public
   @GetMapping
-  public List<AuthorResponse> getAll() {
-    return authorService.getAll();
+  public List<PublisherResponse> getAll() {
+    return publisherService.getAll();
   }
 }

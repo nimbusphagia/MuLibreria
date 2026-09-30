@@ -1,5 +1,6 @@
 package com.nimbusphagia.mu_libreria.model.entity;
 
+import com.nimbusphagia.mu_libreria.model.dto.genre.GenreRequest;
 import com.nimbusphagia.mu_libreria.model.entity.base.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -23,5 +24,9 @@ public class Genre extends BaseEntity {
 
   @Column(unique = true, nullable = false)
   private String name;
+
+  public void updateFrom(GenreRequest request) {
+    this.name = request.name();
+  }
 
 }

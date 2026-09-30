@@ -14,39 +14,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nimbusphagia.mu_libreria.model.dto.author.AuthorRequest;
-import com.nimbusphagia.mu_libreria.model.dto.author.AuthorResponse;
-import com.nimbusphagia.mu_libreria.service.AuthorService;
+import com.nimbusphagia.mu_libreria.model.dto.facilitator.FacilitatorRequest;
+import com.nimbusphagia.mu_libreria.model.dto.facilitator.FacilitatorResponse;
+import com.nimbusphagia.mu_libreria.service.FacilitatorService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/authors")
+@RequestMapping("/facilitators")
 @RequiredArgsConstructor
-public class AuthorController {
-  private final AuthorService authorService;
+public class FacilitatorController {
+  private final FacilitatorService facilitatorService;
 
   // Admin restricted
   @PostMapping
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.CREATED)
-  public AuthorResponse create(@RequestBody @Valid AuthorRequest request) {
-    return authorService.create(request);
+  public FacilitatorResponse create(@RequestBody @Valid FacilitatorRequest request) {
+    return facilitatorService.create(request);
   }
 
-  @PutMapping("/{authorId}")
+  @PutMapping("/{facilitatorId}")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.OK)
-  public AuthorResponse edit(
-      @PathVariable("authorId") UUID authorId,
-      @RequestBody @Valid AuthorRequest request) {
-    return authorService.edit(authorId, request);
+  public FacilitatorResponse edit(
+      @PathVariable("facilitatorId") UUID facilitatorId,
+      @RequestBody @Valid FacilitatorRequest request) {
+    return facilitatorService.edit(facilitatorId, request);
   }
 
   // Public
   @GetMapping
-  public List<AuthorResponse> getAll() {
-    return authorService.getAll();
+  public List<FacilitatorResponse> getAll() {
+    return facilitatorService.getAll();
   }
+
 }

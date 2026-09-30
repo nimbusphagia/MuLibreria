@@ -52,7 +52,7 @@ public class AdminProductController {
   @PutMapping("/book/{productId}/details")
   @ResponseStatus(HttpStatus.OK)
   public BookDetailsResponse editDetails(@PathVariable UUID productId, @RequestBody @Valid BookDetailsRequest request) {
-    return bookService.editBook(productId, request);
+    return bookService.editDetails(productId, request);
   }
 
   // Delete book
@@ -74,16 +74,14 @@ public class AdminProductController {
   @ResponseStatus(HttpStatus.OK)
   public WorkshopDetailsResponse editDetails(@PathVariable UUID publicId,
       @RequestBody @Valid WorkshopDetailsRequest request) {
-    return workshopService.editWorkshop(publicId, request);
+    return workshopService.editDetails(publicId, request);
   }
 
-  // Edit base product
-  @PutMapping("/products/{publicId}")
-  @ResponseStatus(HttpStatus.OK)
-  public ProductResponse editProduct(
-      @PathVariable UUID publicId,
-      @RequestBody @Valid EditProductRequest request) {
-    return productService.editProduct(publicId, request);
+  // Delete Workshop
+  @DeleteMapping("/workshops/{productId}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deleteWorkshop(@PathVariable UUID productId) {
+    productService.deleteWorkshop(productId);
   }
 
   // Upload media to product
@@ -93,6 +91,15 @@ public class AdminProductController {
       @PathVariable UUID publicId,
       @RequestBody @Valid List<MediaRequest> request) {
     return productService.addMedia(publicId, request);
+  }
+
+  // Edit base product
+  @PutMapping("/products/{publicId}")
+  @ResponseStatus(HttpStatus.OK)
+  public ProductResponse editProduct(
+      @PathVariable UUID publicId,
+      @RequestBody @Valid EditProductRequest request) {
+    return productService.editProduct(publicId, request);
   }
 
 }
